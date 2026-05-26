@@ -1,0 +1,23 @@
+{
+  "workflow_type": "onboarding",
+  "employee_id": "EMP003",
+  "employee_name": "Anil Kumar",
+  "employee_email": "anil.kumar@example.com",
+  "manager_email": "manager.ops@example.com",
+  "pmo_email": "pmo.macquarie@example.com",
+  "dsp_reviewer_email": "dsp.reviewer@example.com",
+  "department": "Operations",
+  "role": "Workforce Analyst",
+  "joining_date": "2026-06-10",
+  "project_name": "Workforce Orchestrator",
+  "client_name": "Macquarie",
+  "bcg_required": true,
+  "bcg_vendor": "First Advantage",
+  "bcg_reference_id": "BCG-EMP003-20260610",
+  "requested_assets": [
+    "laptop",
+    "id_card",
+    "mail_id",
+    "welcome_kit"
+  ]
+}

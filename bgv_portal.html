@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Verification Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .candidate-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .candidate-info h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .candidate-info p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .upload-section {
+            margin-bottom: 30px;
+        }
+
+        .upload-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-section h3::before {
+            content: "📄";
+            font-size: 1.5em;
+        }
+
+        .file-upload-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .file-upload-box {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .file-upload-box:hover {
+            background: #e9ecef;
+            border-color: #764ba2;
+        }
+
+        .file-upload-box.uploaded {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .file-upload-box input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-box label {
+            cursor: pointer;
+            display: block;
+        }
+
+        .file-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .file-upload-box p {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .file-name {
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+
+        .preview-container {
+            margin-top: 10px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-message.processing {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .verification-results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .verification-results h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .verification-item {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verification-item.pass {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .verification-item.fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .verification-item.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .instructions {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .instructions h4 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .instructions li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Background Verification Portal</h1>
+            <p>Upload your documents for verification</p>
+        </div>
+
+        <div class="candidate-info" id="candidateInfo">
+            <h3>Candidate Information</h3>
+            <p><strong>Name:</strong> <span id="candidateName">Loading...</span></p>
+            <p><strong>Employee ID:</strong> <span id="employeeId">Loading...</span></p>
+            <p><strong>Email:</strong> <span id="candidateEmail">Loading...</span></p>
+        </div>
+
+        <div class="instructions">
+            <h4>📋 Instructions</h4>
+            <ul>
+                <li>Upload clear, readable images of your Aadhaar card (front and back)</li>
+                <li>Upload the completed details form (PDF/DOCX format)</li>
+                <li>Upload your resume/CV (PDF/DOCX format)</li>
+                <li>Ensure all information is visible and not blurred</li>
+                <li>File size should not exceed 5MB per document</li>
+                <li>Our AI system will verify your documents automatically and cross-check names across all documents</li>
+            </ul>
+        </div>
+
+        <div class="upload-section">
+            <h3>Upload Documents</h3>
+            
+            <div class="file-upload-container">
+                <div class="file-upload-box" id="aadhaarFrontBox">
+                    <input type="file" id="aadhaarFront" accept="image/*" onchange="handleFileSelect(event, 'front')">
+                    <label for="aadhaarFront">
+                        <div class="file-icon">🪪</div>
+                        <strong>Aadhaar Front</strong>
+                        <p>Click to upload</p>
+                        <div class="preview-container" id="frontPreview"></div>
+                    </label>
+                </div>
+
+                <div class="file-upload-box" id="aadhaarBackBox">
+                    <input type="file" id="aadhaarBack" accept="image/*" onchange="handleFileSelect(event, 'back')">
+                    <label for="aadhaarBack">
+                        <div class="file-icon">🪪</div>
+                        <strong>Aadhaar Back</strong>
+                        <p>Click to upload</p>
+                        <div class="preview-container" id="backPreview"></div>
+                    </label>
+                </div>
+
+                <div class="file-upload-box" id="detailsFormBox">
+                    <input type="file" id="detailsForm" accept=".pdf" onchange="handleFileSelect(event, 'form')">
+                    <label for="detailsForm">
+                        <div class="file-icon">📄</div>
+                        <strong>Details Form</strong>
+                        <p>Click to upload PDF</p>
+                        <div class="preview-container" id="formPreview"></div>
+                    </label>
+                
+                <div class="file-upload-box" id="resumeBox">
+                    <input type="file" id="resume" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event, 'resume')">
+                    <label for="resume">
+                        <div class="file-icon">📋</div>
+                        <strong>Resume/CV</strong>
+                        <p>Click to upload PDF/DOCX</p>
+                        <div class="preview-container" id="resumePreview"></div>
+                    </label>
+                </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" onclick="submitDocuments()" disabled>
+                Submit for Verification
+            </button>
+        </div>
+
+        <div class="loader" id="loader"></div>
+        <div class="status-message" id="statusMessage"></div>
+        
+        <div class="verification-results" id="verificationResults">
+            <h3>🔍 Verification Results</h3>
+            <div id="resultsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedFiles = {
+            front: null,
+            back: null,
+            form: null,
+            resume: null
+        };
+
+        // Get candidate info from URL parameters
+        function getCandidateInfo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                name: urlParams.get('name') || 'Test Candidate',
+                employeeId: urlParams.get('empId') || 'EMP001',
+                email: urlParams.get('email') || 'candidate@example.com'
+            };
+        }
+
+        // Initialize candidate info
+        window.onload = function() {
+            const info = getCandidateInfo();
+            document.getElementById('candidateName').textContent = info.name;
+            document.getElementById('employeeId').textContent = info.employeeId;
+            document.getElementById('candidateEmail').textContent = info.email;
+        };
+
+        function handleFileSelect(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                showStatus('File size exceeds 5MB. Please upload a smaller file.', 'error');
+                return;
+            }
+
+            uploadedFiles[type] = file;
+            
+            const box = document.getElementById(
+                type === 'front' ? 'aadhaarFrontBox' :
+                type === 'back' ? 'aadhaarBackBox' :
+                type === 'form' ? 'detailsFormBox' :
+                'resumeBox'
+            );
+            box.classList.add('uploaded');
+
+            // Show preview for images
+            if (type === 'front' || type === 'back') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewId = type === 'front' ? 'frontPreview' : 'backPreview';
+                    document.getElementById(previewId).innerHTML =
+                        `<img src="${e.target.result}" class="preview-image" alt="${type} preview">
+                         <div class="file-name">✓ ${file.name}</div>`;
+                };
+                reader.readAsDataURL(file);
+            } else if (type === 'form') {
+                document.getElementById('formPreview').innerHTML =
+                    `<div class="file-name">✓ ${file.name}</div>`;
+            } else if (type === 'resume') {
+                document.getElementById('resumePreview').innerHTML =
+                    `<div class="file-name">✓ ${file.name}</div>`;
+            }
+
+            // Enable submit button if all files are uploaded
+            checkAllFilesUploaded();
+        }
+
+        function checkAllFilesUploaded() {
+            const allUploaded = uploadedFiles.front && uploadedFiles.back && uploadedFiles.form && uploadedFiles.resume;
+            document.getElementById('submitBtn').disabled = !allUploaded;
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = `status-message ${type}`;
+            statusDiv.style.display = 'block';
+        }
+
+        function hideStatus() {
+            document.getElementById('statusMessage').style.display = 'none';
+        }
+
+        async function submitDocuments() {
+            const submitBtn = document.getElementById('submitBtn');
+            const loader = document.getElementById('loader');
+            const resultsDiv = document.getElementById('verificationResults');
+            
+            submitBtn.disabled = true;
+            loader.style.display = 'block';
+            hideStatus();
+            resultsDiv.style.display = 'none';
+            
+            showStatus('🔄 Processing documents with AI verification...', 'processing');
+
+            try {
+                const formData = new FormData();
+                formData.append('aadhaar_front', uploadedFiles.front);
+                formData.append('aadhaar_back', uploadedFiles.back);
+                formData.append('details_form', uploadedFiles.form);
+                formData.append('resume', uploadedFiles.resume);
+                
+                const info = getCandidateInfo();
+                formData.append('employee_id', info.employeeId);
+                formData.append('employee_name', info.name);
+                formData.append('employee_email', info.email);
+
+                // Use current host and port
+                const apiUrl = `${window.location.protocol}//${window.location.host}/api/bgv-verify`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                loader.style.display = 'none';
+
+                if (response.ok && result.verification_status === 'approved') {
+                    showStatus('✅ Verification Successful! All documents are verified.', 'success');
+                    displayResults(result);
+                } else if (result.verification_status === 'rejected') {
+                    showStatus('❌ Verification Failed. Please review the issues below.', 'error');
+                    displayResults(result);
+                } else if (result.verification_status === 'review_required') {
+                    showStatus('⚠️ Manual Review Required. Some checks need human verification.', 'error');
+                    displayResults(result);
+                } else {
+                    throw new Error(result.error || 'Verification failed');
+                }
+            } catch (error) {
+                loader.style.display = 'none';
+                showStatus(`❌ Error: ${error.message}`, 'error');
+                submitBtn.disabled = false;
+            }
+        }
+
+        function displayResults(result) {
+            const resultsDiv = document.getElementById('verificationResults');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            let html = '';
+            
+            if (result.checks) {
+                result.checks.forEach(check => {
+                    const status = check.status === 'pass' ? 'pass' : 
+                                 check.status === 'fail' ? 'fail' : 'warning';
+                    const icon = check.status === 'pass' ? '✓' : 
+                               check.status === 'fail' ? '✗' : '⚠';
+                    
+                    html += `
+                        <div class="verification-item ${status}">
+                            <span style="font-size: 1.5em;">${icon}</span>
+                            <div>
+                                <strong>${check.check_name}</strong>
+                                <p style="margin: 5px 0 0 0; font-size: 0.9em;">${check.message}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (result.ai_analysis) {
+                html += `
+                    <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 5px;">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">🤖 AI Analysis Summary</h4>
+                        <p style="color: #555;">${result.ai_analysis}</p>
+                    </div>
+                `;
+            }
+
+            resultsContent.innerHTML = html;
+            resultsDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

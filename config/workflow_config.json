@@ -1,0 +1,60 @@
+{
+  "mail_provider": "gmail_smtp",
+  "gmail_smtp": {
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 587,
+    "sender_email": "your.workflow.bot@gmail.com",
+    "sender_password": "YOUR_GMAIL_APP_PASSWORD",
+    "use_tls": true
+  },
+  "gemini_api_key": "AIzaSyCv5gqdrMMg5KbkdGcUcs40ZGBgrwtuESE",
+  "bgv_settings": {
+    "auto_approve_threshold": 85,
+    "manual_review_threshold": 70,
+    "enable_reference_comparison": true,
+    "require_all_documents": true
+  },
+  "workflow_names": {
+    "onboarding": "Employee Onboarding Automation",
+    "offboarding": "Employee Offboarding Automation"
+  },
+  "asset_rules": {
+    "onboarding_auto_assign_only_if_available": true,
+    "offboarding_mark_missing_assets": true,
+    "onboarding_auto_create_service_assets": true
+  },
+  "mail_templates": {
+    "screening_approved": {
+      "subject": "Profile screening approved for {employee_name}",
+      "body": "Profile screening is approved for {employee_name}. Project: {project_name}. Client: {client_name}. Current stage: {current_stage}."
+    },
+    "onboarding_initiated": {
+      "subject": "Onboarding initiated for {employee_name}",
+      "body": "Onboarding is initiated for {employee_name}. Joining date: {joining_date}. Department: {department}. Role: {role}. BCG required: {bcg_required}."
+    },
+    "bcg_initiated": {
+      "subject": "BCG initiated for {employee_name}",
+      "body": "Background check has started for {employee_name}. Current BCG status: {bcg_status}. Project: {project_name}. Client: {client_name}."
+    },
+    "bcg_completed": {
+      "subject": "BCG cleared for {employee_name}",
+      "body": "Background check is completed for {employee_name}. Current BCG status: {bcg_status}. Asset initiation can proceed based on workflow rules."
+    },
+    "assets_initiated": {
+      "subject": "Assets initiated for {employee_name}",
+      "body": "Assets and access are initiated for {employee_name}. Assigned assets: {asset_list}. Pending assets: {pending_assets}. Current stage: {current_stage}."
+    },
+    "onboarding_completed": {
+      "subject": "Onboarding completed for {employee_name}",
+      "body": "Onboarding is completed for {employee_name}. Current stage: {current_stage}. Assigned assets: {asset_list}. Pending assets: {pending_assets}."
+    },
+    "offboarding_initiated": {
+      "subject": "Offboarding initiated for {employee_name}",
+      "body": "Offboarding has started for {employee_name}. Last working date: {last_working_date}. Current stage: {current_stage}."
+    },
+    "offboarding_completed": {
+      "subject": "Offboarding completed for {employee_name}",
+      "body": "Offboarding is completed for {employee_name}. Returned assets: {returned_assets}. Missing assets: {missing_assets}. Current stage: {current_stage}."
+    }
+  }
+}

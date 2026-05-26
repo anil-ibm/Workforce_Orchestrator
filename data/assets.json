@@ -1,0 +1,51 @@
+[
+  {
+    "asset_id": "LAP-1001",
+    "asset_type": "laptop",
+    "model": "ThinkPad T14",
+    "status": "available",
+    "assigned_to": null
+  },
+  {
+    "asset_id": "MON-2001",
+    "asset_type": "monitor",
+    "model": "Dell 24",
+    "status": "available",
+    "assigned_to": null
+  },
+  {
+    "asset_id": "ID-3001",
+    "asset_type": "id_card",
+    "model": "Corporate RFID",
+    "status": "available",
+    "assigned_to": null
+  },
+  {
+    "asset_id": "LAP-1002",
+    "asset_type": "laptop",
+    "model": "HP EliteBook",
+    "status": "assigned",
+    "assigned_to": "EMP003"
+  },
+  {
+    "asset_id": "PHN-4001",
+    "asset_type": "phone",
+    "model": "iPhone SE",
+    "status": "available",
+    "assigned_to": null
+  },
+  {
+    "asset_id": "MAIL_ID-2b699161",
+    "asset_type": "mail_id",
+    "model": "Provisioned Service",
+    "status": "assigned",
+    "assigned_to": "EMP003"
+  },
+  {
+    "asset_id": "WELCOME_KIT-7187256e",
+    "asset_type": "welcome_kit",
+    "model": "Provisioned Service",
+    "status": "assigned",
+    "assigned_to": "EMP003"
+  }
+]

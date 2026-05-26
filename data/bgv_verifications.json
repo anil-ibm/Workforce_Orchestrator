@@ -1,0 +1,29 @@
+[
+  {
+    "verification_id": "BGV-20260526083201",
+    "employee_id": "UNKNOWN",
+    "employee_name": "Nina",
+    "timestamp": "2026-05-26T08:32:01.663372+00:00",
+    "verification_status": "rejected",
+    "checks": [
+      {
+        "check_name": "Aadhaar Front Extraction",
+        "status": "fail",
+        "message": "Failed to extract: 404 models/gemini-pro-vision is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods."
+      },
+      {
+        "check_name": "Aadhaar Back Extraction",
+        "status": "fail",
+        "message": "Failed to extract: 404 models/gemini-pro-vision is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods."
+      },
+      {
+        "check_name": "Resume Extraction",
+        "status": "warning",
+        "message": "Could not extract resume data: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods."
+      }
+    ],
+    "extracted_data": {},
+    "ai_analysis": "",
+    "confidence_score": 0
+  }
+]

@@ -1,0 +1,4018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDCP Dashboard - Workforce Orchestrator</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --panel-soft: #f8fbff;
+      --sidebar: #0f172a;
+      --sidebar-muted: #94a3b8;
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --accent: #14b8a6;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #22c55e;
+      --shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, #f8fbff 45%, #f4f7fb 100%);
+      color: var(--text);
+    }
+
+    .app-shell {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #0f172a 0%, #111c3b 100%);
+      color: #fff;
+      padding: 28px 18px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding: 10px 12px;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #2563eb, #14b8a6);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .brand-text p {
+      margin: 4px 0 0;
+      color: var(--sidebar-muted);
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav a {
+      color: #e5eefc;
+      text-decoration: none;
+      padding: 14px 16px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateX(2px);
+    }
+
+    .nav .icon {
+      width: 18px;
+      text-align: center;
+      opacity: 0.95;
+    }
+
+    .nav-toggle {
+      width: 100%;
+      color: #e5eefc;
+      background: transparent;
+      text-decoration: none;
+      padding: 14px 16px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 500;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .nav-toggle:hover,
+    .nav-toggle.active {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateX(2px);
+    }
+
+    .nav-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .caret {
+      color: var(--sidebar-muted);
+      transition: transform 0.2s ease;
+      font-size: 12px;
+    }
+
+    .project-submenu {
+      display: none;
+      margin: 8px 0 10px 44px;
+      padding: 10px 12px;
+      border-left: 2px solid rgba(96, 165, 250, 0.65);
+      color: #dbeafe;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0 12px 12px 0;
+      font-size: 13px;
+    }
+
+    .project-submenu.open {
+      display: block;
+    }
+
+    .project-node {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .project-node-button {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      padding: 0;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .project-node-title {
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .project-node-owner {
+      margin-top: 4px;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .nested-submenu {
+      display: none;
+      margin-left: 10px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(148, 163, 184, 0.45);
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nested-submenu.open {
+      display: flex;
+    }
+
+    .nested-item {
+      color: #dbeafe;
+      text-decoration: none;
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+    }
+
+    .nested-item.active {
+      background: rgba(37, 99, 235, 0.35);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .candidate-name-link {
+      color: #2563eb;
+      text-decoration: underline;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .compact-hover-cell {
+      position: relative;
+      width: 220px;
+      max-width: 220px;
+    }
+
+    .compact-hover-summary {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      line-height: 1.35;
+      max-height: 2.8em;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #dbe4f0;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: default;
+    }
+
+    .compact-hover-popover {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: calc(100% + 8px);
+      z-index: 30;
+      width: 320px;
+      max-width: 320px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #dbe4f0;
+      box-shadow: 0 18px 34px rgba(15, 23, 42, 0.16);
+    }
+
+    .compact-hover-cell:hover .compact-hover-popover {
+      display: block;
+    }
+
+    .compact-hover-title {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .compact-hover-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #334155;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .compact-hover-list li + li {
+      margin-top: 4px;
+    }
+
+    .plan-stage-nav {
+      display: flex;
+      gap: 12px;
+      margin: 0 0 18px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.35s ease;
+    }
+
+    .plan-stage-button {
+      border: 1px solid #c9d8ef;
+      background: #ffffff;
+      color: #355070;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.08);
+    }
+
+    .plan-stage-button:hover,
+    .plan-stage-button.active {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      border-color: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .profile-screening-dashboard {
+      display: none;
+      grid-column: span 12;
+      animation: fadeUp 0.35s ease;
+    }
+
+    .profile-screening-dashboard.active-dashboard {
+      display: block;
+    }
+
+    .screening-shell {
+      background: #ffffff;
+      border: 1px solid #dbe5f0;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .screening-topnav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e5edf6;
+      flex-wrap: wrap;
+    }
+
+    .screening-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .screening-tab {
+      padding: 14px 16px;
+      font-size: 14px;
+      color: #475569;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .screening-tab.active {
+      color: #2563eb;
+      border-bottom-color: #2563eb;
+      background: rgba(37, 99, 235, 0.04);
+    }
+
+    .screening-export {
+      background: #0b72d9;
+      color: #ffffff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(11, 114, 217, 0.22);
+    }
+
+    .candidate-tab-panel {
+      display: none;
+      animation: fadeUp 0.25s ease;
+    }
+
+    .candidate-tab-panel.active {
+      display: block;
+    }
+
+    .empty-state-card {
+      background: linear-gradient(135deg, #ffffff, #f8fbff);
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 36px 24px;
+      text-align: center;
+      color: #475569;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .empty-state-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .empty-state-card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: #1e293b;
+    }
+
+    .empty-state-card p {
+      margin: 0;
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .screening-body {
+      padding: 16px;
+      background: #f8fbff;
+    }
+
+    .screening-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #dbeafe;
+      border-left: 4px solid #3b82f6;
+      color: #1d4ed8;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      animation: fadeUp 0.4s ease;
+    }
+
+    .screening-toolbar {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .screening-toolbar input,
+    .screening-toolbar select {
+      padding: 10px 12px;
+      border: 1px solid #d7dce5;
+      border-radius: 10px;
+      font: inherit;
+      background: #ffffff;
+    }
+
+    .screening-table-wrap {
+      background: #ffffff;
+      border: 1px solid #dbe5f0;
+      border-radius: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    .screening-table {
+      width: 100%;
+      min-width: 1180px;
+      border-collapse: collapse;
+      font-size: 12px;
+      table-layout: auto;
+    }
+
+    .screening-table th,
+    .screening-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #edf2f7;
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .screening-table th {
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .cv-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #15803d;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .download-btn {
+      background: #0b72d9;
+      color: #ffffff;
+      border: none;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .status-select {
+      min-width: 110px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .status-select:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+    }
+
+    .status-select.status-approve {
+      background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%);
+      border-color: #4ade80;
+      color: #166534;
+    }
+
+    .status-select.status-hold {
+      background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .status-select.status-nominated {
+      background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%);
+      border-color: #60a5fa;
+      color: #1d4ed8;
+    }
+
+    .status-select.status-reject {
+      background: linear-gradient(135deg, #fee2e2 0%, #fca5a5 100%);
+      border-color: #f87171;
+      color: #991b1b;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .detail-dashboard {
+      display: none;
+      grid-column: span 12;
+    }
+
+    .detail-dashboard.active-dashboard {
+      display: block;
+    }
+
+    .detail-shell {
+      background: #ffffff;
+      border: 1px solid #dbe5f0;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .detail-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid #e7edf5;
+      background: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1f2a37;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 50px;
+      padding: 20px 22px 28px;
+      background: #ffffff;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eef3f8;
+      font-size: 14px;
+    }
+
+    .detail-label {
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .detail-value {
+      color: #1f2937;
+    }
+
+    .detail-footer {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 16px;
+      background: #0f3d7a;
+    }
+
+    .detail-footer button {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mini-caret {
+      color: #94a3b8;
+      transition: transform 0.2s ease;
+      font-size: 11px;
+    }
+
+    .project-node-button.active .mini-caret {
+      transform: rotate(90deg);
+    }
+
+    .candidate-dashboard {
+      display: none;
+      grid-column: span 12;
+    }
+
+    .candidate-dashboard.active-dashboard {
+      display: block;
+    }
+
+    .candidate-shell {
+      background: #ffffff;
+      border: 1px solid #dbe5f0;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .candidate-tabs {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      padding: 0 18px;
+      min-height: 58px;
+      border-bottom: 1px solid #dde7f1;
+      background: #ffffff;
+    }
+
+    .candidate-tab {
+      padding: 18px 0 13px;
+      border-bottom: 3px solid transparent;
+      color: #7b8797;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .candidate-tab.active {
+      color: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .candidate-alert {
+      margin: 14px 16px 0;
+      background: #eaf4ff;
+      border: 1px solid #d4e7fb;
+      color: #3a6d9b;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .candidate-table-wrap {
+      padding: 16px;
+    }
+
+    .candidate-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .candidate-table th,
+    .candidate-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #e7edf5;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .candidate-table th {
+      background: #eef5fc;
+      color: #415166;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .candidate-person {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #4b5563;
+      font-weight: 600;
+    }
+
+    .candidate-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #d5dde8;
+      display: inline-grid;
+      place-items: center;
+      color: #5b6472;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .candidate-link {
+      color: #2563eb;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .candidate-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      padding: 12px 16px 16px;
+      color: #5c6b7c;
+      font-size: 12px;
+      border-top: 1px solid #e7edf5;
+    }
+
+    .nav-toggle.active .caret {
+      transform: rotate(90deg);
+    }
+
+    .help-link {
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .main {
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .title-block h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .title-block p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      min-width: 280px;
+      box-shadow: var(--shadow);
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+      background: transparent;
+    }
+
+    .action-pill,
+    .profile-chip {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .profile-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%);
+      color: white;
+      border-radius: 24px;
+      padding: 26px;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 20px;
+      box-shadow: 0 24px 55px rgba(29, 78, 216, 0.24);
+      margin-bottom: 24px;
+    }
+
+    .hero h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.86);
+      line-height: 1.6;
+      max-width: 680px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .hero-card span {
+      display: block;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .hero-card strong {
+      font-size: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h4 {
+      margin: 0 0 18px;
+      font-size: 17px;
+    }
+
+    .kpi-row {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .kpi {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .kpi .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .kpi .value {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .kpi .trend {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .trend.up { color: var(--success); }
+    .trend.warn { color: var(--warning); }
+    .trend.down { color: var(--danger); }
+
+    .delivery-insights {
+      grid-column: span 7;
+    }
+
+    .my-projects {
+      grid-column: span 5;
+    }
+
+    .favourites {
+      grid-column: span 4;
+    }
+
+    .activity {
+      grid-column: span 8;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .table th,
+    .table td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge.success { background: #dcfce7; color: #166534; }
+    .badge.warning { background: #fef3c7; color: #92400e; }
+    .badge.danger { background: #fee2e2; color: #991b1b; }
+    .badge.info { background: #dbeafe; color: #1d4ed8; }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel-soft);
+    }
+
+    .list-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .list-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .progress-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .progress-row span {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: var(--muted);
+    }
+
+    .bar {
+      width: 100%;
+      height: 10px;
+      background: #e9eef7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .blue { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+    .green { background: linear-gradient(90deg, #14b8a6, #34d399); }
+    .orange { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .red { background: linear-gradient(90deg, #ef4444, #fb7185); }
+
+    .footer-help {
+      grid-column: span 12;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      background: linear-gradient(135deg, #ffffff, #f8fbff);
+    }
+
+    .footer-help p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .help-button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25);
+    }
+
+    .workflow-visual-card {
+      margin-top: 18px;
+      border: 1px solid #dbe4f0;
+      border-radius: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, #ffffff, #f8fbff);
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
+    }
+
+    .workflow-visual-card h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      color: #0f172a;
+    }
+
+    .workflow-visual-card p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .stage-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .stage-pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .stage-pill.active {
+      background: linear-gradient(90deg, #2563eb, #38bdf8);
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
+    }
+
+    .workflow-summary-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .workflow-summary-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .workflow-summary-item span {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #64748b;
+      letter-spacing: 0.4px;
+      margin-bottom: 8px;
+    }
+
+    .workflow-summary-item strong {
+      display: block;
+      color: #0f172a;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .workflow-mini-grid {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr 1fr;
+      gap: 16px;
+    }
+
+    .workflow-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .workflow-panel h4 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      color: #0f172a;
+    }
+
+    .workflow-metadata {
+      display: grid;
+      gap: 10px;
+    }
+
+    .workflow-metadata-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .workflow-metadata-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .workflow-metadata-row label {
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .workflow-metadata-row span {
+      text-align: right;
+      color: #0f172a;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .checklist-item strong {
+      display: block;
+      font-size: 14px;
+      color: #0f172a;
+    }
+
+    .checklist-item span {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-chip.completed {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-chip.in-progress {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .status-chip.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-chip.waived {
+      background: #ede9fe;
+      color: #6d28d9;
+    }
+
+    .notification-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .notification-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: #f8fafc;
+    }
+
+    .notification-item strong {
+      display: block;
+      color: #0f172a;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .notification-item span {
+      display: block;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active-section {
+      display: block;
+    }
+
+    @media (max-width: 1200px) {
+      .hero,
+      .kpi-row {
+        grid-template-columns: 1fr;
+      }
+
+      .delivery-insights,
+      .my-projects,
+      .favourites,
+      .activity,
+      .footer-help {
+        grid-column: span 12;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        padding-bottom: 14px;
+      }
+
+      .main {
+        padding: 20px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .search-box {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">ID</div>
+        <div class="brand-text">
+          <h1>IDCP Tool</h1>
+          <p>Workforce Orchestrator</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#" class="active" data-target="homeSection"><span class="icon">⌂</span>Home</a>
+        <a href="#" data-target="deliverySection"><span class="icon">▣</span>Delivery Insights</a>
+        <button class="nav-toggle" id="myProjectsToggle" type="button">
+          <span class="nav-toggle-left">
+            <span class="icon">☰</span>
+            <span>My Projects</span>
+          </span>
+          <span class="caret">▶</span>
+        </button>
+        <div class="project-submenu" id="projectSubmenu">
+          <div class="project-node">
+            <button class="project-node-button" id="macquarieToggle" type="button">
+              <div class="project-node-title">
+                <span>Macquarie Group</span>
+                <span class="mini-caret">▶</span>
+              </div>
+              <div class="project-node-owner">Workforce Delivery Team</div>
+            </button>
+            <div class="nested-submenu" id="macquarieSubmenu">
+              <a href="#" class="nested-item" id="planToggle">Plan</a>
+            </div>
+          </div>
+        </div>
+        <a href="#" data-target="favouritesSection"><span class="icon">★</span>Favourites</a>
+      </nav>
+
+      <div class="help-link">
+        <nav class="nav">
+          <a href="#" data-target="helpSection"><span class="icon">?</span>Help</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="content-section active-section" id="homeSection">
+        <div class="topbar">
+          <div class="title-block">
+            <h2>Dashboard Overview</h2>
+            <p>Track onboarding and offboarding delivery, project status, asset readiness, and workflow exceptions.</p>
+          </div>
+
+          <div class="topbar-actions">
+            <div class="search-box">
+              <span>⌕</span>
+              <input type="text" placeholder="Search employee, workflow or project">
+            </div>
+            <div class="action-pill">🔔 4 Alerts</div>
+            <div class="profile-chip">
+              <div class="avatar">AK</div>
+              <span>Anil Kumar</span>
+            </div>
+          </div>
+        </div>
+
+        <section class="hero">
+          <div>
+            <h3>Welcome back to IDCP Delivery Hub</h3>
+            <p>
+              Monitor workflow execution across onboarding and offboarding, identify bottlenecks in asset readiness,
+              review delivery insights, and keep critical employee lifecycle projects on track with a clean operational view.
+            </p>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-card">
+              <span>Workflow Completion</span>
+              <strong>92%</strong>
+            </div>
+            <div class="hero-card">
+              <span>Pending Actions</span>
+              <strong>14</strong>
+            </div>
+            <div class="hero-card">
+              <span>Projects Owned</span>
+              <strong>08</strong>
+            </div>
+            <div class="hero-card">
+              <span>Mail Success Rate</span>
+              <strong>97%</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-row">
+          <div class="kpi">
+            <div class="label">Home - Total Workflows</div>
+            <div class="value">128</div>
+            <div class="trend up">↑ 12% from last week</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Delivery Insights - SLA Health</div>
+            <div class="value">89%</div>
+            <div class="trend up">↑ Stable delivery trend</div>
+          </div>
+          <div class="kpi">
+            <div class="label">My Projects - Active</div>
+            <div class="value">11</div>
+            <div class="trend warn">↗ 3 need review today</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Favourites - Saved Views</div>
+            <div class="value">06</div>
+            <div class="trend down">↓ 1 outdated view</div>
+          </div>
+        </section>
+
+        <section class="grid">
+          <div class="card activity">
+            <h4>Recent Workflow Activity</h4>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Workflow ID</th>
+                  <th>Type</th>
+                  <th>Employee</th>
+                  <th>Status</th>
+                  <th>Owner</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>WF-10021</td>
+                  <td>Onboarding</td>
+                  <td>Ananya Sharma</td>
+                  <td><span class="badge success">Completed</span></td>
+                  <td>IT Ops</td>
+                </tr>
+                <tr>
+                  <td>WF-10022</td>
+                  <td>Offboarding</td>
+                  <td>Ravi Kumar</td>
+                  <td><span class="badge danger">Asset Escalation</span></td>
+                  <td>Admin</td>
+                </tr>
+                <tr>
+                  <td>WF-10023</td>
+                  <td>Onboarding</td>
+                  <td>Priya Singh</td>
+                  <td><span class="badge warning">Procurement Pending</span></td>
+                  <td>Asset Team</td>
+                </tr>
+                <tr>
+                  <td>WF-10024</td>
+                  <td>Offboarding</td>
+                  <td>John David</td>
+                  <td><span class="badge info">Mail Retry Pending</span></td>
+                  <td>HR Ops</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <button
+            type="button"
+            id="homeChatbotLauncher"
+            style="position: fixed; right: 28px; bottom: 28px; width: 64px; height: 64px; border: none; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #14b8a6); color: #ffffff; font-size: 28px; cursor: pointer; box-shadow: 0 18px 35px rgba(37, 99, 235, 0.32); z-index: 1000;"
+            aria-label="Open AI chatbot"
+            title="Open AI chatbot"
+          >
+            🤖
+          </button>
+
+          <div
+            id="homeChatbotPopup"
+            style="display: none; position: fixed; right: 28px; bottom: 104px; width: 380px; max-width: calc(100vw - 32px); background: #ffffff; border: 1px solid #dbe4f0; border-radius: 22px; box-shadow: 0 24px 48px rgba(15, 23, 42, 0.18); overflow: hidden; z-index: 1000;"
+          >
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, #eff6ff, #ecfeff); border-bottom: 1px solid #dbe4f0;">
+              <div>
+                <div style="font-size: 14px; font-weight: 800; color: #0f172a;">AI Workforce Assistant</div>
+                <div style="font-size: 12px; color: #64748b;">Ask questions or filter candidate views</div>
+              </div>
+              <button
+                type="button"
+                id="homeChatbotCloseBtn"
+                style="border: none; background: transparent; color: #475569; font-size: 20px; cursor: pointer;"
+                aria-label="Close chatbot"
+                title="Close chatbot"
+              >
+                ×
+              </button>
+            </div>
+
+            <div style="padding: 16px 18px;">
+              <div
+                id="homeChatbotResponse"
+                style="min-height: 120px; max-height: 240px; overflow: auto; background: #f8fbff; border: 1px solid #dbe4f0; border-radius: 16px; padding: 14px; color: #0f172a; line-height: 1.6; white-space: pre-wrap;"
+              >
+                Ask a question to get a realtime response.
+              </div>
+
+              <textarea
+                id="homeChatbotQuery"
+                rows="4"
+                placeholder="Example: how many candidates are there?&#10;Filter approved candidates&#10;Show candidates with 5+ years"
+                style="width: 100%; resize: vertical; padding: 14px 16px; border-radius: 16px; border: 1px solid #dbe4f0; font: inherit; line-height: 1.5; background: #f8fafc; margin-top: 14px;"
+              ></textarea>
+
+              <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;">
+                <button
+                  type="button"
+                  id="homeChatbotAskBtn"
+                  style="background: #2563eb; color: white; border: none; border-radius: 12px; padding: 11px 16px; font: inherit; font-weight: 700; cursor: pointer;"
+                >
+                  Ask AI
+                </button>
+                <button
+                  type="button"
+                  id="homeChatbotApplyFilterBtn"
+                  style="background: #14b8a6; color: white; border: none; border-radius: 12px; padding: 11px 16px; font: inherit; font-weight: 700; cursor: pointer;"
+                >
+                  Apply Filter
+                </button>
+                <button
+                  type="button"
+                  id="homeChatbotClearBtn"
+                  style="background: #e2e8f0; color: #0f172a; border: none; border-radius: 12px; padding: 11px 16px; font: inherit; font-weight: 700; cursor: pointer;"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="content-section" id="deliverySection">
+        <div class="topbar">
+          <div class="title-block">
+            <h2>Delivery Insights</h2>
+            <p>Measure workflow completion, SLA health, asset readiness, and escalation hotspots.</p>
+          </div>
+        </div>
+        <section class="grid">
+          <div class="card delivery-insights">
+            <h4>Delivery Insights</h4>
+            <div class="progress-group">
+              <div class="progress-row">
+                <span><strong>Onboarding completion rate</strong><strong>86%</strong></span>
+                <div class="bar"><div class="bar-fill blue" style="width: 86%;"></div></div>
+              </div>
+              <div class="progress-row">
+                <span><strong>Offboarding closure rate</strong><strong>78%</strong></span>
+                <div class="bar"><div class="bar-fill green" style="width: 78%;"></div></div>
+              </div>
+              <div class="progress-row">
+                <span><strong>Asset provisioning readiness</strong><strong>69%</strong></span>
+                <div class="bar"><div class="bar-fill orange" style="width: 69%;"></div></div>
+              </div>
+              <div class="progress-row">
+                <span><strong>Escalation cases</strong><strong>12%</strong></span>
+                <div class="bar"><div class="bar-fill red" style="width: 12%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="content-section" id="myProjectsSection">
+        <div class="topbar">
+          <div class="title-block">
+            <h2>My Projects</h2>
+            <p>Review owned delivery initiatives and operational workstreams.</p>
+          </div>
+        </div>
+        <section class="grid">
+          <div class="card my-projects" id="myProjectsCard">
+            <h4>My Projects</h4>
+            <div class="list">
+              <div class="list-item">
+                <div>
+                  <strong>Employee Onboarding Automation</strong>
+                  <span>Owner: HR Ops · Updated 20 mins ago</span>
+                </div>
+                <span class="badge info">In Progress</span>
+              </div>
+              <div class="list-item">
+                <div>
+                  <strong>Offboarding Asset Recovery</strong>
+                  <span>Owner: IT Admin · Updated 1 hour ago</span>
+                </div>
+                <span class="badge warning">Needs Review</span>
+              </div>
+              <div class="list-item">
+                <div>
+                  <strong>Mail Delivery Stabilization</strong>
+                  <span>Owner: Platform Team · Updated today</span>
+                </div>
+                <span class="badge success">On Track</span>
+              </div>
+              <div class="list-item">
+                <div>
+                  <strong>Macquarie Group</strong>
+                  <span>Owner: Workforce Delivery Team · Updated just now</span>
+                </div>
+                <span class="badge info">New</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="candidate-dashboard" id="onboardingDashboard">
+            <div class="candidate-shell">
+              <div class="candidate-tabs candidate-work-tabs" id="activityTabs">
+                <div class="candidate-tab" data-tab-target="activityDetailsPane">Details</div>
+                <div class="candidate-tab" data-tab-target="activityGuidancePane">Guidance</div>
+                <div class="candidate-tab" data-tab-target="activityPractitionerPane">Practitioner</div>
+                <div class="candidate-tab" data-tab-target="activityAttachmentsPane">Attachments</div>
+                <div class="candidate-tab" data-tab-target="activityWorkflowPane">Workflow</div>
+                <div class="candidate-tab" data-tab-target="activityCommentsPane">Comments</div>
+                <div class="candidate-tab active" data-tab-target="activityLogPane">Activity Log</div>
+              </div>
+
+              <div class="candidate-tab-panel" id="activityDetailsPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">📄</div>
+                  <h3>No preview available</h3>
+                  <p>Overview details open from the approved candidate list. Select a candidate in Onboarding to load CSV-backed details.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="activityGuidancePane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">🧭</div>
+                  <h3>Guidance content in progress</h3>
+                  <p>This area is reserved for policy notes, onboarding guidance, and delivery instructions.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="activityPractitionerPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">👤</div>
+                  <h3>Practitioner preview unavailable</h3>
+                  <p>Practitioner-level assignment data is not yet mapped for this view.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="activityAttachmentsPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">📎</div>
+                  <h3>No attachment preview</h3>
+                  <p>Attachment metadata will appear here once document sources are connected.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="activityWorkflowPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">⚙️</div>
+                  <h3>Workflow tracking under maintenance</h3>
+                  <p>Workflow progression details are being prepared for this section.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="activityCommentsPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">💬</div>
+                  <h3>No comments to display</h3>
+                  <p>Comments will be shown here when collaboration history becomes available.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel active" id="activityLogPane">
+                <div class="candidate-alert">ℹ Select 2 versions and click here to view the differences between them.</div>
+
+                <div class="candidate-table-wrap">
+                  <table class="candidate-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 60px;">#</th>
+                        <th>Candidate</th>
+                        <th>Role</th>
+                        <th>Changed By</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>04</td>
+                        <td>Ananya Sharma</td>
+                        <td>Backend Engineer</td>
+                        <td>
+                          <div class="candidate-person">
+                            <span class="candidate-avatar">D</span>
+                            <span>Dhiraj More</span>
+                          </div>
+                        </td>
+                        <td>29-Apr-2026 16:18:42</td>
+                        <td><span class="candidate-link">On-boarded</span></td>
+                      </tr>
+                      <tr>
+                        <td>03</td>
+                        <td>Rahul Verma</td>
+                        <td>Data Analyst</td>
+                        <td>
+                          <div class="candidate-person">
+                            <span class="candidate-avatar">D</span>
+                            <span>Dhiraj More</span>
+                          </div>
+                        </td>
+                        <td>29-Apr-2026 16:06:04</td>
+                        <td><span class="candidate-link">On-boarded</span></td>
+                      </tr>
+                      <tr>
+                        <td>02</td>
+                        <td>Priya Nair</td>
+                        <td>QA Engineer</td>
+                        <td>
+                          <div class="candidate-person">
+                            <span class="candidate-avatar">P</span>
+                            <span>Priti Mondal</span>
+                          </div>
+                        </td>
+                        <td>29-Apr-2026 16:05:03</td>
+                        <td><span class="candidate-link">On-boarded</span></td>
+                      </tr>
+                      <tr>
+                        <td>01</td>
+                        <td>Vikram Joshi</td>
+                        <td>Support Engineer</td>
+                        <td>
+                          <div class="candidate-person">
+                            <span class="candidate-avatar">P</span>
+                            <span>Priti Mondal</span>
+                          </div>
+                        </td>
+                        <td>20-Apr-2026 17:39:14</td>
+                        <td><span class="candidate-link">On-boarded</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="candidate-footer">
+                  <span>Rows per page: 10</span>
+                  <span>1-4 of 4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan-stage-nav">
+            <button type="button" class="plan-stage-button active" id="profileScreeningStageBtn">Profile Screening</button>
+            <button type="button" class="plan-stage-button" id="onboardingStageBtn">Onboarding</button>
+          </div>
+
+          <div class="profile-screening-dashboard active-dashboard" id="profileScreeningDashboard">
+            <div class="screening-shell">
+              <div class="screening-topnav">
+                <div class="screening-tabs candidate-work-tabs" id="screeningTabs">
+                  <div class="screening-tab" data-tab-target="screeningOverviewPane">Overview</div>
+                  <div class="screening-tab active" data-tab-target="screeningEvaluationPane">Candidate Evaluation</div>
+                  <div class="screening-tab" data-tab-target="screeningProjectsPane">Projects</div>
+                  <div class="screening-tab" data-tab-target="screeningClientsPane">Clients</div>
+                  <div class="screening-tab" data-tab-target="screeningManagersPane">Managers</div>
+                </div>
+                <button type="button" class="screening-export">📄 EXPORT</button>
+              </div>
+
+              <div class="screening-body candidate-tab-panel" id="screeningOverviewPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">📊</div>
+                  <h3>Overview ready soon</h3>
+                  <p>Summary insights for screening progress will appear here as additional aggregates are connected.</p>
+                </div>
+              </div>
+
+              <div class="screening-body candidate-tab-panel active" id="screeningEvaluationPane">
+                <div class="screening-banner">
+                  <span>👥</span>
+                  <span>Review nominated candidates, update their status, and download the submitted profile where available.</span>
+                </div>
+
+                <div class="screening-toolbar">
+                  <input type="text" id="screeningSerialFilter" placeholder="Filter #" />
+                  <input type="text" id="screeningNameFilter" placeholder="Filter Candidate Name" />
+                  <input type="text" id="screeningEmployeeIdFilter" placeholder="Filter Employee ID" />
+                  <select id="screeningSkillFilter">
+                    <option value="">All Skills</option>
+                  </select>
+                  <input type="text" id="screeningExperienceFilter" placeholder="Experience: 3+, <3, 5" />
+                  <select id="screeningCvFilter">
+                    <option value="">All CV</option>
+                    <option value="YES">Uploaded</option>
+                    <option value="NO">Not Uploaded</option>
+                  </select>
+                  <select id="screeningProjectFilter">
+                    <option value="">All Projects</option>
+                  </select>
+                  <select id="screeningClientFilter">
+                    <option value="">All Clients</option>
+                  </select>
+                  <input type="text" id="screeningManagerFilter" placeholder="Filter Manager" />
+                  <select id="screeningStatusFilter">
+                    <option value="">All Statuses</option>
+                  </select>
+                  <select id="screeningSortFilter">
+                    <option value="name-asc">Sort: Name A-Z</option>
+                    <option value="name-desc">Sort: Name Z-A</option>
+                    <option value="employee-asc">Sort: Employee ID</option>
+                    <option value="experience-asc">Sort: Experience</option>
+                    <option value="skill-asc">Sort: Skill</option>
+                    <option value="project-asc">Sort: Project</option>
+                    <option value="client-asc">Sort: Client</option>
+                    <option value="manager-asc">Sort: Manager</option>
+                    <option value="status-asc">Sort: Status</option>
+                  </select>
+                </div>
+
+                <div style="margin: 15px 0; text-align: right;">
+                  <button id="refreshCandidatesBtn" style="padding: 8px 16px; background: #0f62fe; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                    🔄 Refresh Candidates from Resumes Folder
+                  </button>
+                </div>
+
+                <div class="screening-table-wrap">
+                  <table class="screening-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 44px;">#</th>
+                        <th>Candidate Name</th>
+                        <th>Employee ID</th>
+                        <th>Skill</th>
+                        <th>Experience</th>
+                        <th>CV</th>
+                        <th>Download</th>
+                        <th>Project</th>
+                        <th>Client</th>
+                        <th>Manager</th>
+                        <th style="min-width: 120px;">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="profileScreeningTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="screening-body candidate-tab-panel" id="screeningProjectsPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">📁</div>
+                  <h3>Project view under maintenance</h3>
+                  <p>Project-wise screening grouping will be displayed here when the project analytics layer is enabled.</p>
+                </div>
+              </div>
+
+              <div class="screening-body candidate-tab-panel" id="screeningClientsPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">🏢</div>
+                  <h3>Client preview unavailable</h3>
+                  <p>Client-specific screening insights will appear here after client-level visualization is connected.</p>
+                </div>
+              </div>
+
+              <div class="screening-body candidate-tab-panel" id="screeningManagersPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">🧑‍💼</div>
+                  <h3>Manager breakdown in progress</h3>
+                  <p>Manager-level staffing and approval details will be shown here once the dataset is expanded.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="candidate-dashboard" id="onboardedDashboard">
+            <div class="candidate-shell">
+              <div class="candidate-tabs">
+                <div class="candidate-tab active">Onboarding Candidates</div>
+                <div class="candidate-tab">Source: Excel / Database</div>
+              </div>
+
+              <div class="candidate-alert">ℹ Candidate names can be loaded from Excel, API, or database. Click a name to open the Details section.</div>
+
+              <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                <input type="text" id="candidateNameFilter" placeholder="Filter Candidate Name" style="padding: 10px 12px; border: 1px solid #d7dce5; border-radius: 10px; font: inherit;" />
+                <select id="checklistTypeFilter" style="padding: 10px 12px; border: 1px solid #d7dce5; border-radius: 10px; font: inherit;">
+                  <option value="">All Checklist Types</option>
+                </select>
+                <select id="currentStatusFilter" style="padding: 10px 12px; border: 1px solid #d7dce5; border-radius: 10px; font: inherit;">
+                  <option value="">All Statuses</option>
+                </select>
+                <select id="sourceFilter" style="padding: 10px 12px; border: 1px solid #d7dce5; border-radius: 10px; font: inherit;">
+                  <option value="">All Sources</option>
+                </select>
+                <select id="sortFilter" style="padding: 10px 12px; border: 1px solid #d7dce5; border-radius: 10px; font: inherit;">
+                  <option value="name-asc">Sort: Name A-Z</option>
+                  <option value="name-desc">Sort: Name Z-A</option>
+                  <option value="checklist-asc">Sort: Checklist A-Z</option>
+                  <option value="status-asc">Sort: Status A-Z</option>
+                  <option value="source-asc">Sort: Source A-Z</option>
+                </select>
+              </div>
+
+              <div class="candidate-table-wrap">
+                <table class="candidate-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 60px;">#</th>
+                      <th>Candidate Name</th>
+                      <th>Checklist Type</th>
+                      <th>Current Status</th>
+                      <th>Source</th>
+                    </tr>
+                  </thead>
+                  <tbody id="onboardingCandidateTableBody"></tbody>
+                </table>
+              </div>
+
+              <div class="candidate-footer">
+                <span>Rows per page: 15</span>
+                <span id="onboardingCandidateCount">0-0 of 0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-dashboard" id="detailDashboard">
+            <div class="detail-shell">
+              <div class="candidate-tabs candidate-work-tabs" id="detailTabs">
+                <div class="candidate-tab active" data-tab-target="detailDataPane">Details</div>
+                <div class="candidate-tab" data-tab-target="detailGuidancePane">Guidance</div>
+                <div class="candidate-tab" data-tab-target="detailPractitionerPane">Practitioner</div>
+                <div class="candidate-tab" data-tab-target="detailAttachmentsPane">Attachments</div>
+                <div class="candidate-tab" data-tab-target="detailWorkflowPane">Workflow</div>
+                <div class="candidate-tab" data-tab-target="detailCommentsPane">Comments</div>
+                <div class="candidate-tab" data-tab-target="detailActivityPane">Activity Log</div>
+              </div>
+
+              <div class="candidate-tab-panel active" id="detailDataPane">
+                <div class="detail-header" id="detailHeader"></div>
+
+                <div class="workflow-summary-grid" style="margin-bottom: 18px;">
+                  <div class="workflow-summary-item">
+                    <span>Manager</span>
+                    <strong id="overviewManagerValue"></strong>
+                  </div>
+                  <div class="workflow-summary-item">
+                    <span>Client</span>
+                    <strong id="overviewClientValue"></strong>
+                  </div>
+                  <div class="workflow-summary-item">
+                    <span>Project</span>
+                    <strong id="overviewProjectValue"></strong>
+                  </div>
+                  <div class="workflow-summary-item">
+                    <span>Candidate Status</span>
+                    <strong id="overviewStatusValue"></strong>
+                  </div>
+                </div>
+
+                <div class="detail-grid">
+                  <div>
+                    <div class="detail-row"><div class="detail-label">ID</div><div class="detail-value" id="detailIdValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Checklist Type</div><div class="detail-value" id="detailChecklistTypeValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">PMO</div><div class="detail-value" id="detailPmoValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">PTL Reviewer</div><div class="detail-value" id="detailPtlReviewerValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Current Status</div><div class="detail-value" id="detailCurrentStatusValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Date Initiated</div><div class="detail-value" id="detailDateInitiatedValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Practitioner Login ID</div><div class="detail-value" id="detailPractitionerLoginIdValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">PractitionerEmailID</div><div class="detail-value" id="detailPractitionerEmailIdValue"></div></div>
+                  </div>
+                  <div>
+                    <div class="detail-row"><div class="detail-label">Name</div><div class="detail-value" id="detailNameValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Practitioner</div><div class="detail-value" id="detailPractitionerValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">DSP Reviewer</div><div class="detail-value" id="detailDspReviewerValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Practitioner Delegate</div><div class="detail-value" id="detailPractitionerDelegateValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Overall Status</div><div class="detail-value" id="detailOverallStatusValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Due Date</div><div class="detail-value" id="detailDueDateValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Workflow Queue</div><div class="detail-value" id="detailWorkflowQueueValue"></div></div>
+                    <div class="detail-row"><div class="detail-label">Onboarding Training/Reference Documents</div><div class="detail-value" id="detailDocumentsValue"></div></div>
+                  </div>
+                </div>
+
+                <div class="workflow-visual-card" id="workflowVisualCard">
+                  <h3>Sequential Workforce Workflow</h3>
+                  <p>Track the linked employee lifecycle from Profile Screening to Onboarding, BGC, asset initiation, notifications, offboarding, and asset return.</p>
+
+                  <div class="stage-pill-row" id="workflowStagePills"></div>
+
+                  <div class="workflow-summary-grid">
+                    <div class="workflow-summary-item">
+                      <span>Current Stage</span>
+                      <strong id="workflowCurrentStageValue">Profile Screening</strong>
+                    </div>
+                    <div class="workflow-summary-item">
+                      <span>BGC Requirement</span>
+                      <strong id="workflowBcgRequirementValue">Pending</strong>
+                    </div>
+                    <div class="workflow-summary-item">
+                      <span>BGC Status</span>
+                      <strong id="workflowBcgStatusValue">Pending</strong>
+                    </div>
+                    <div class="workflow-summary-item">
+                      <span>Mail Trigger Scope</span>
+                      <strong id="workflowMailScopeValue">Candidate, Manager, PMO, DSP Reviewer</strong>
+                    </div>
+                  </div>
+
+                  <div class="workflow-mini-grid">
+                    <div class="workflow-panel">
+                      <h4>BGC Checkpoint</h4>
+                      <div class="workflow-metadata">
+                        <div class="workflow-metadata-row"><label>BGC Required</label><span id="workflowBcgRequiredFlag">-</span></div>
+                        <div class="workflow-metadata-row"><label>BGC Status</label><span id="workflowBcgDecisionValue">-</span></div>
+                        <div class="workflow-metadata-row"><label>Progress Rule</label><span id="workflowProgressRuleValue">Assets start after BGC if required</span></div>
+                      </div>
+                    </div>
+
+                    <div class="workflow-panel">
+                      <h4>Asset Initiation</h4>
+                      <div class="checklist" id="workflowAssetChecklist"></div>
+                    </div>
+
+                    <div class="workflow-panel">
+                      <h4>Mail Trigger Timeline</h4>
+                      <div class="notification-list" id="workflowNotificationList"></div>
+                    </div>
+                  </div>
+
+                  <div class="workflow-progress-shell">
+                    <div class="workflow-progress-header">
+                      <div>
+                        <strong>One-to-One Task Progress</strong>
+                        <span id="workflowProgressText">Track exact step execution from onboarding through offboarding.</span>
+                      </div>
+                      <strong id="workflowProgressPercent">0%</strong>
+                    </div>
+                    <div class="workflow-progress-track">
+                      <div class="workflow-progress-fill" id="workflowProgressFill"></div>
+                    </div>
+                    <div class="task-stepper" id="workflowTaskStepper"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="detailGuidancePane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">🧭</div>
+                  <h3>Guidance not available</h3>
+                  <p>This candidate does not yet have dedicated guidance content mapped for preview.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="detailPractitionerPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">👤</div>
+                  <h3>Practitioner view pending</h3>
+                  <p>Practitioner-specific records will appear here when the data source is available.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="detailAttachmentsPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">📎</div>
+                  <h3>No attachment preview</h3>
+                  <p>Attachment content is not currently available for this candidate.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="detailWorkflowPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">⚙️</div>
+                  <h3>Workflow data in maintenance</h3>
+                  <p>Workflow step history will be displayed here when integrated.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="detailCommentsPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">💬</div>
+                  <h3>No comments found</h3>
+                  <p>There are currently no comments available for this candidate.</p>
+                </div>
+              </div>
+
+              <div class="candidate-tab-panel" id="detailActivityPane">
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">🕘</div>
+                  <h3>Activity log not ready</h3>
+                  <p>Candidate activity history is under preparation and will appear here later.</p>
+                </div>
+              </div>
+
+              <div class="detail-footer">
+                <button type="button" id="saveDetailBtn">Save</button>
+                <button type="button" id="returnToOnboardingBtn">Return</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="content-section" id="favouritesSection">
+        <div class="topbar">
+          <div class="title-block">
+            <h2>Favourites</h2>
+            <p>Access saved operational views, pinned monitors, and preferred dashboards.</p>
+          </div>
+        </div>
+        <section class="grid">
+          <div class="card favourites">
+            <h4>Favourites</h4>
+            <div class="list">
+              <div class="list-item">
+                <div>
+                  <strong>High Priority Exits</strong>
+                  <span>Saved filter for urgent offboarding cases</span>
+                </div>
+                <span class="badge danger">3 Open</span>
+              </div>
+              <div class="list-item">
+                <div>
+                  <strong>Asset Shortage View</strong>
+                  <span>Track procurement and stock blockers</span>
+                </div>
+                <span class="badge warning">4 Delays</span>
+              </div>
+              <div class="list-item">
+                <div>
+                  <strong>Mail Failure Monitor</strong>
+                  <span>Graph API delivery exceptions</span>
+                </div>
+                <span class="badge info">2 Pending</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="content-section" id="helpSection">
+        <div class="topbar">
+          <div class="title-block">
+            <h2>Help & Support</h2>
+            <p>Access user guides, delivery playbooks, workflow documentation, and support contacts.</p>
+          </div>
+        </div>
+        <section class="grid">
+          <div class="card footer-help">
+            <div>
+              <h4>Help Center</h4>
+              <p>
+                Access process guides, workflow documentation, delivery playbooks, and support contacts for the IDCP dashboard.
+              </p>
+            </div>
+            <button class="help-button">Open Help Center</button>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script>
+    const myProjectsToggle = document.getElementById("myProjectsToggle");
+    const projectSubmenu = document.getElementById("projectSubmenu");
+    const macquarieToggle = document.getElementById("macquarieToggle");
+    const macquarieSubmenu = document.getElementById("macquarieSubmenu");
+    const planToggle = document.getElementById("planToggle");
+    const onboardingDashboard = document.getElementById("onboardingDashboard");
+    const onboardedDashboard = document.getElementById("onboardedDashboard");
+    const detailDashboard = document.getElementById("detailDashboard");
+    const detailHeader = document.getElementById("detailHeader");
+    const detailNameValue = document.getElementById("detailNameValue");
+    const returnToOnboardingBtn = document.getElementById("returnToOnboardingBtn");
+    const myProjectsCard = document.getElementById("myProjectsCard");
+    const candidateNameLinks = document.querySelectorAll(".candidate-name-link");
+    const navLinks = document.querySelectorAll(".nav a[data-target]");
+    const sections = document.querySelectorAll(".content-section");
+
+    function activateSection(targetId) {
+      sections.forEach((section) => {
+        section.classList.remove("active-section");
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove("active");
+      });
+
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        targetSection.classList.add("active-section");
+      }
+
+      const activeLink = document.querySelector(`.nav a[data-target="${targetId}"]`);
+      if (activeLink) {
+        activeLink.classList.add("active");
+      }
+
+      if (targetId !== "myProjectsSection") {
+        hideProjectDashboard();
+      }
+    }
+
+    const detailIdValue = document.getElementById("detailIdValue");
+    const detailChecklistTypeValue = document.getElementById("detailChecklistTypeValue");
+    const detailPmoValue = document.getElementById("detailPmoValue");
+    const detailPtlReviewerValue = document.getElementById("detailPtlReviewerValue");
+    const detailCurrentStatusValue = document.getElementById("detailCurrentStatusValue");
+    const detailDateInitiatedValue = document.getElementById("detailDateInitiatedValue");
+    const detailPractitionerLoginIdValue = document.getElementById("detailPractitionerLoginIdValue");
+    const detailPractitionerEmailIdValue = document.getElementById("detailPractitionerEmailIdValue");
+    const detailPractitionerValue = document.getElementById("detailPractitionerValue");
+    const detailDspReviewerValue = document.getElementById("detailDspReviewerValue");
+    const detailPractitionerDelegateValue = document.getElementById("detailPractitionerDelegateValue");
+    const detailOverallStatusValue = document.getElementById("detailOverallStatusValue");
+    const screeningSerialFilter = document.getElementById("screeningSerialFilter");
+    const screeningNameFilter = document.getElementById("screeningNameFilter");
+    const screeningEmployeeIdFilter = document.getElementById("screeningEmployeeIdFilter");
+    const screeningSkillFilter = document.getElementById("screeningSkillFilter");
+    const screeningExperienceFilter = document.getElementById("screeningExperienceFilter");
+    const screeningCvFilter = document.getElementById("screeningCvFilter");
+    const screeningProjectFilter = document.getElementById("screeningProjectFilter");
+    const screeningClientFilter = document.getElementById("screeningClientFilter");
+    const screeningManagerFilter = document.getElementById("screeningManagerFilter");
+    const screeningStatusFilter = document.getElementById("screeningStatusFilter");
+    const screeningSortFilter = document.getElementById("screeningSortFilter");
+    const detailDueDateValue = document.getElementById("detailDueDateValue");
+    const detailWorkflowQueueValue = document.getElementById("detailWorkflowQueueValue");
+    const detailDocumentsValue = document.getElementById("detailDocumentsValue");
+    const profileScreeningDashboard = document.getElementById("profileScreeningDashboard");
+    const profileScreeningStageBtn = document.getElementById("profileScreeningStageBtn");
+    const onboardingStageBtn = document.getElementById("onboardingStageBtn");
+    const profileScreeningTableBody = document.getElementById("profileScreeningTableBody");
+    const onboardingCandidateTableBody = document.getElementById("onboardingCandidateTableBody");
+    const onboardingCandidateCount = document.getElementById("onboardingCandidateCount");
+    const candidateNameFilter = document.getElementById("candidateNameFilter");
+    const checklistTypeFilter = document.getElementById("checklistTypeFilter");
+    const currentStatusFilter = document.getElementById("currentStatusFilter");
+    const sourceFilter = document.getElementById("sourceFilter");
+    const sortFilter = document.getElementById("sortFilter");
+    const overviewManagerValue = document.getElementById("overviewManagerValue");
+    const overviewClientValue = document.getElementById("overviewClientValue");
+    const overviewProjectValue = document.getElementById("overviewProjectValue");
+    const overviewStatusValue = document.getElementById("overviewStatusValue");
+    const workflowCurrentStageValue = document.getElementById("workflowCurrentStageValue");
+    const workflowBcgRequirementValue = document.getElementById("workflowBcgRequirementValue");
+    const workflowBcgStatusValue = document.getElementById("workflowBcgStatusValue");
+    const workflowMailScopeValue = document.getElementById("workflowMailScopeValue");
+    const workflowBcgRequiredFlag = document.getElementById("workflowBcgRequiredFlag");
+    const workflowBcgDecisionValue = document.getElementById("workflowBcgDecisionValue");
+    const workflowProgressRuleValue = document.getElementById("workflowProgressRuleValue");
+    const workflowAssetChecklist = document.getElementById("workflowAssetChecklist");
+    const workflowNotificationList = document.getElementById("workflowNotificationList");
+    const workflowStagePills = document.getElementById("workflowStagePills");
+    const workflowTaskStepper = document.getElementById("workflowTaskStepper");
+    const workflowProgressFill = document.getElementById("workflowProgressFill");
+    const workflowProgressPercent = document.getElementById("workflowProgressPercent");
+    const workflowProgressText = document.getElementById("workflowProgressText");
+    const homeChatbotLauncher = document.getElementById("homeChatbotLauncher");
+    const homeChatbotPopup = document.getElementById("homeChatbotPopup");
+    const homeChatbotCloseBtn = document.getElementById("homeChatbotCloseBtn");
+    const homeChatbotQuery = document.getElementById("homeChatbotQuery");
+    const homeChatbotAskBtn = document.getElementById("homeChatbotAskBtn");
+    const homeChatbotApplyFilterBtn = document.getElementById("homeChatbotApplyFilterBtn");
+    const homeChatbotClearBtn = document.getElementById("homeChatbotClearBtn");
+    const homeChatbotResponse = document.getElementById("homeChatbotResponse");
+    let detailRecordsByName = {};
+    let onboardingCandidateRecords = [];
+    let screeningRecords = [];
+    let allCandidateRecords = [];
+    let activeCandidateName = "";
+    const WORKFLOW_STAGE_STORAGE_KEY = "workforce_orchestrator_workflow_stages";
+    const REALTIME_API_BASE_URL = "http://127.0.0.1:8050";
+    const HOMEPAGE_CHATBOT_API_URL = "http://127.0.0.1:8050/api/chatbot";
+
+    function loadPersistedWorkflowStages() {
+      try {
+        return JSON.parse(localStorage.getItem(WORKFLOW_STAGE_STORAGE_KEY) || "{}");
+      } catch (error) {
+        console.warn("Unable to parse persisted workflow stages", error);
+        return {};
+      }
+    }
+
+    function persistWorkflowStage(candidateName, stageName) {
+      const persistedStages = loadPersistedWorkflowStages();
+      persistedStages[candidateName] = stageName;
+      localStorage.setItem(WORKFLOW_STAGE_STORAGE_KEY, JSON.stringify(persistedStages));
+    }
+
+    function getScreeningRecordByCandidateName(candidateName) {
+      return screeningRecords.find(
+        (item) => item.candidateName.toLowerCase() === String(candidateName || "").trim().toLowerCase()
+      );
+    }
+
+    function getDetailRecordByCandidateName(candidateName) {
+      return detailRecordsByName[String(candidateName || "").trim().toLowerCase()] || {};
+    }
+
+    function buildRealtimeStagePayload(candidateName, stageName) {
+      const screeningRecord = getScreeningRecordByCandidateName(candidateName) || {};
+      const detailRecord = getApprovedOnboardingDisplayRecord(getDetailRecordByCandidateName(candidateName) || {});
+      const employeeId = screeningRecord.employeeId || detailRecord["Practitioner Login ID"] || detailRecord["ID"] || "";
+      const practitionerEmail =
+        detailRecord["Practitioner Email ID"] ||
+        `${String(candidateName || "").trim().toLowerCase()}@gmail.com`;
+
+      const basePayload = {
+        employee_id: employeeId,
+        employee_name: candidateName,
+        employee_email: practitionerEmail,
+        manager_email: "manager.workflow@gmail.com",
+        pmo_email: "pmo.workflow@gmail.com",
+        dsp_reviewer_email: "dsp.workflow@gmail.com",
+        department: "Workforce Delivery",
+        role: "Practitioner",
+        project_name: screeningRecord.projectName || "Workforce Orchestrator",
+        client_name: screeningRecord.clientName || "Macquarie",
+        joining_date: detailRecord["Date Initiated"] || "2026-05-25",
+        last_working_date: detailRecord["Due Date"] || "2026-05-25"
+      };
+
+      const stagePayloadMap = {
+        "Onboarded": {
+          stage_name: "onboarding_initiated",
+          ...basePayload,
+          bcg_required: true,
+          bcg_status: "initiated"
+        },
+        "BGC": {
+          stage_name: "bgc_completed",
+          ...basePayload,
+          bcg_required: true,
+          bcg_status: "cleared"
+        },
+        "Asset Initiated": {
+          stage_name: "assets_initiated",
+          ...basePayload,
+          bcg_required: true,
+          bcg_status: "cleared",
+          assigned_assets: [
+            { asset_id: "LAPTOP-LOCAL", asset_type: "laptop" },
+            { asset_id: "IDCARD-LOCAL", asset_type: "id_card" },
+            { asset_id: "MAILID-LOCAL", asset_type: "mail_id" }
+          ],
+          pending_assets: []
+        },
+        "Offboarded": {
+          stage_name: "offboarding_completed",
+          ...basePayload,
+          last_working_date: detailRecord["Due Date"] || "2026-05-25"
+        }
+      };
+
+      return stagePayloadMap[stageName] || null;
+    }
+
+    function openBGVPortal(candidateName, employeeId, employeeEmail) {
+      // Open BGV portal in a new window with candidate information
+      const bgvUrl = `bgv_portal.html?name=${encodeURIComponent(candidateName)}&empId=${encodeURIComponent(employeeId)}&email=${encodeURIComponent(employeeEmail)}`;
+      window.open(bgvUrl, '_blank', 'width=1200,height=900');
+      
+      // Show confirmation message
+      alert(`BGV Portal opened for ${candidateName}.\n\nThe candidate can now upload their documents:\n- Aadhaar Front\n- Aadhaar Back\n- Details Form\n\nThe AI will verify the documents automatically.`);
+    }
+
+    async function triggerRealtimeStageMail(candidateName, stageName) {
+      const payload = buildRealtimeStagePayload(candidateName, stageName);
+      if (!payload) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${REALTIME_API_BASE_URL}/api/realtime-stage-trigger`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const errorPayload = await response.json().catch(() => ({}));
+          throw new Error(errorPayload.error || `Realtime API failed with status ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.info(`Realtime mail triggered for ${candidateName} at stage ${stageName}`, result);
+      } catch (error) {
+        console.error(`Realtime mail trigger failed for ${candidateName} at stage ${stageName}`, error);
+      }
+    }
+
+    function applyChatbotCandidateFilters(query) {
+      const normalizedQuery = String(query || "").toLowerCase();
+
+      let filterApplied = false;
+
+      if (normalizedQuery.includes("approved")) {
+        activateSection("myProjectsSection");
+        showOnboardingStage();
+        currentStatusFilter.value = "Onboarded";
+        renderOnboardingCandidates();
+        homeChatbotResponse.textContent += "\n\nApplied filter: approved/onboarded candidates in Onboarding view.";
+        filterApplied = true;
+      }
+
+      const experienceMatch = normalizedQuery.match(/(\d+)\+?\s*(years|year|yrs|yr)/);
+      if (experienceMatch) {
+        activateSection("myProjectsSection");
+        showProfileScreeningStage();
+        screeningExperienceFilter.value = `${experienceMatch[1]}+`;
+        renderProfileScreeningTable();
+        homeChatbotResponse.textContent += `\n\nApplied filter: candidates with ${experienceMatch[1]}+ years experience in Profile Screening.`;
+        filterApplied = true;
+      }
+
+      if (normalizedQuery.includes("nominated")) {
+        activateSection("myProjectsSection");
+        showProfileScreeningStage();
+        screeningStatusFilter.value = "Nominated";
+        renderProfileScreeningTable();
+        homeChatbotResponse.textContent += "\n\nApplied filter: nominated candidates in Profile Screening.";
+        filterApplied = true;
+      }
+
+      if (normalizedQuery.includes("reject")) {
+        activateSection("myProjectsSection");
+        showProfileScreeningStage();
+        screeningStatusFilter.value = "Reject";
+        renderProfileScreeningTable();
+        homeChatbotResponse.textContent += "\n\nApplied filter: rejected candidates in Profile Screening.";
+        filterApplied = true;
+      }
+
+      return filterApplied;
+    }
+
+    function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+    function escapeHtmlFixed(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+    escapeHtml = escapeHtmlFixed;
+
+    function getActiveSectionId() {
+      const activeSection = document.querySelector(".content-section.active-section");
+      return activeSection?.id || "homeSection";
+    }
+
+    function getVisibleCandidateCountFromUiContext() {
+      if (getActiveSectionId() === "myProjectsSection") {
+        if (profileScreeningDashboard?.classList.contains("active-dashboard")) {
+          return profileScreeningTableBody?.querySelectorAll("tr")?.length || 0;
+        }
+        if (onboardingDashboard?.classList.contains("active-dashboard")) {
+          return onboardingCandidateTableBody?.querySelectorAll("tr")?.length || 0;
+        }
+      }
+      return 0;
+    }
+
+    function buildHomepageChatbotCandidateSnapshot() {
+      const screeningCandidates = screeningRecords.map((record) => ({
+        name: record.candidateName || "",
+        employeeId: record.employeeId || "",
+        skill: Array.isArray(record.skills) ? record.skills.join(", ") : (record.primarySkill || ""),
+        experience: record.experienceDisplay || record.experience || "",
+        project: record.projectName || "",
+        client: record.clientName || "",
+        manager: record.manager || "",
+        status: record.status || "Unknown",
+        source: "profile_screening"
+      }));
+
+      const onboardingCandidates = onboardingCandidateRecords.map((record) => ({
+        name: record["Name"] || "",
+        employeeId: record["Practitioner Login ID"] || record["ID"] || "",
+        skill: record["Skill Set"] || "",
+        experience: record["Experience"] || "",
+        project: record["Project"] || "",
+        client: record["Client"] || "",
+        manager: record["Hiring Manager"] || "",
+        status: record["Current Status"] || record["Overall Status"] || "Onboarded",
+        source: "onboarding"
+      }));
+
+      const candidateMap = new Map();
+      [...screeningCandidates, ...onboardingCandidates].forEach((candidate) => {
+        const key = `${candidate.name}::${candidate.employeeId}`;
+        if (!candidateMap.has(key)) {
+          candidateMap.set(key, candidate);
+        } else {
+          candidateMap.set(key, { ...candidateMap.get(key), ...candidate });
+        }
+      });
+
+      return Array.from(candidateMap.values()).filter((candidate) => candidate.name);
+    }
+
+    function buildHomepageChatbotContext() {
+      const workflowStage = activeCandidateName ? getPersistedWorkflowStage(activeCandidateName) : "";
+      return {
+        activeSection: getActiveSectionId(),
+        activeCandidateName: activeCandidateName || "",
+        workflowStage: workflowStage || "",
+        visibleCandidateCount: getVisibleCandidateCountFromUiContext(),
+        onboardingStatusFilter: currentStatusFilter?.value || "",
+        screeningStatusFilter: screeningStatusFilter?.value || "",
+        screeningExperienceFilter: screeningExperienceFilter?.value || ""
+      };
+    }
+
+    function renderHomepageAssistantConversation(query, reply) {
+      homeChatbotResponse.innerHTML = `
+        <div style="display: grid; gap: 12px;">
+          <div style="justify-self: end; max-width: 88%; background: #dbeafe; color: #0f172a; padding: 12px 14px; border-radius: 16px 16px 4px 16px; font-weight: 600;">
+            ${escapeHtml(query)}
+          </div>
+          <div style="justify-self: start; max-width: 92%; background: #f8fafc; color: #0f172a; padding: 12px 14px; border-radius: 16px 16px 16px 4px; border: 1px solid #dbe4f0;">
+            <div style="font-size: 12px; font-weight: 800; color: #2563eb; margin-bottom: 6px;">AI Workforce Assistant</div>
+            <div style="white-space: pre-wrap; line-height: 1.6;">${escapeHtml(reply)}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function askHomepageChatbot() {
+      const query = homeChatbotQuery?.value?.trim() || "";
+      if (!query) {
+        homeChatbotResponse.textContent = "Enter a question first.";
+        return "";
+      }
+
+      homeChatbotResponse.innerHTML = `
+        <div style="display: grid; gap: 12px;">
+          <div style="justify-self: end; max-width: 88%; background: #dbeafe; color: #0f172a; padding: 12px 14px; border-radius: 16px 16px 4px 16px; font-weight: 600;">
+            ${escapeHtml(query)}
+          </div>
+          <div style="justify-self: start; max-width: 92%; background: #f8fafc; color: #0f172a; padding: 12px 14px; border-radius: 16px 16px 16px 4px; border: 1px solid #dbe4f0;">
+            <div style="font-size: 12px; font-weight: 800; color: #2563eb; margin-bottom: 6px;">AI Workforce Assistant</div>
+            <div>Thinking...</div>
+          </div>
+        </div>
+      `;
+
+      try {
+        const response = await fetch(HOMEPAGE_CHATBOT_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            query,
+            dashboard_context: buildHomepageChatbotContext(),
+            candidates: buildHomepageChatbotCandidateSnapshot()
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Chatbot request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        const reply = data.reply || "No response returned.";
+        renderHomepageAssistantConversation(query, reply);
+        return reply;
+      } catch (error) {
+        const failureMessage = `Failed to get chatbot response: ${error.message}`;
+        renderHomepageAssistantConversation(query, failureMessage);
+        return failureMessage;
+      }
+    }
+
+    function getAutomaticWorkflowStage(record) {
+      const candidateName = String(record?.["Name"] || "").trim().toLowerCase();
+      const screeningRecord = screeningRecords.find(
+        (item) => item.candidateName.toLowerCase() === candidateName
+      );
+
+      if (screeningRecord?.status !== "Approve") {
+        return "Profile Screening";
+      }
+
+      return "Onboarded";
+    }
+
+    function getEffectiveWorkflowStage(record) {
+      const candidateName = String(record?.["Name"] || "").trim();
+      const persistedStages = loadPersistedWorkflowStages();
+      return persistedStages[candidateName] || getAutomaticWorkflowStage(record);
+    }
+
+    function buildStageAwareRecord(record) {
+      const safeRecord = record || {};
+      const candidateName = String(safeRecord["Name"] || "").trim().toLowerCase();
+      const screeningRecord = screeningRecords.find(
+        (item) => item.candidateName.toLowerCase() === candidateName
+      );
+
+      if (screeningRecord?.status !== "Approve") {
+        return safeRecord;
+      }
+
+      const effectiveStage = getEffectiveWorkflowStage(safeRecord);
+      const stageStatusMap = {
+        "Onboarded": { currentStatus: "Onboarded", overallStatus: "Onboarding" },
+        "BGC": { currentStatus: "BGC", overallStatus: "Onboarding" },
+        "Asset Initiated": { currentStatus: "Asset Initiated", overallStatus: "Onboarding" },
+        "Offboarded": { currentStatus: "Offboarded", overallStatus: "Offboarding" },
+        "Asset Returned": { currentStatus: "Asset Returned", overallStatus: "Completed" }
+      };
+      const stageStatus = stageStatusMap[effectiveStage] || stageStatusMap["Onboarded"];
+
+      return {
+        ...safeRecord,
+        "Checklist Type": "Onboarding",
+        "Current Status": stageStatus.currentStatus,
+        "Overall Status": stageStatus.overallStatus
+      };
+    }
+
+    function getApprovedOnboardingDisplayRecord(record) {
+      return buildStageAwareRecord(record);
+    }
+
+    function getWorkflowViewModel(record) {
+      const normalizedRecord = getApprovedOnboardingDisplayRecord(record);
+      const candidateName = normalizedRecord?.["Name"] || "";
+      const screeningRecord = screeningRecords.find(
+        (item) => item.candidateName.toLowerCase() === candidateName.toLowerCase()
+      );
+
+      const approved = screeningRecord?.status === "Approve";
+      const currentStatus = (normalizedRecord?.["Current Status"] || "").toLowerCase();
+      const overallStatus = (normalizedRecord?.["Overall Status"] || "").toLowerCase();
+      const workflowQueue = (normalizedRecord?.["Workflow Queue"] || "").toLowerCase();
+      const isOffboarding = (normalizedRecord?.["Checklist Type"] || "").toLowerCase() === "offboarding";
+
+      const effectiveStage = approved ? getEffectiveWorkflowStage(normalizedRecord) : "Profile Screening";
+      const onboarded = approved && ["Onboarded", "BGC", "Asset Initiated", "Offboarded", "Asset Returned"].includes(effectiveStage);
+      const bcgDone = approved && ["BGC", "Asset Initiated", "Offboarded", "Asset Returned"].includes(effectiveStage);
+      const assetsInitiated = approved && ["Asset Initiated", "Offboarded", "Asset Returned"].includes(effectiveStage);
+      const offboarded = approved && ["Offboarded", "Asset Returned"].includes(effectiveStage);
+      const assetReturned = approved && effectiveStage === "Asset Returned";
+
+      const stageSequence = [
+        "Onboarded",
+        "BGC",
+        "Asset Initiated",
+        "Offboarded",
+        "Asset Returned"
+      ];
+
+      const taskSteps = [
+        {
+          key: "onboarded",
+          title: "Onboarded",
+          description: onboarded
+            ? `${candidateName} is onboarded and mandatory mail triggered to Candidate and Manager.`
+            : `${candidateName} is waiting for onboarding approval.`,
+          status: onboarded ? "completed" : "active"
+        },
+        {
+          key: "bgc",
+          title: "BGC",
+          description: bcgDone
+            ? `BGC completed and mandatory mail triggered to Candidate and Manager.`
+            : `BGC is pending for this candidate. Click button to start BGV portal.`,
+          status: bcgDone ? "completed" : "pending",
+          action: !bcgDone ? {
+            label: "🔐 Start BGV Portal",
+            handler: () => openBGVPortal(candidateName, normalizedRecord.employee_id || 'UNKNOWN', normalizedRecord.employee_email || 'unknown@example.com')
+          } : null
+        },
+        {
+          key: "asset_initiated",
+          title: "Asset Initiated",
+          description: assetsInitiated
+            ? `Laptop, ID Card, Mail ID, and Welcome Kit initiated with mandatory mail triggered to Candidate and Manager.`
+            : `Asset initiation is pending.`,
+          status: assetsInitiated ? "completed" : "pending"
+        },
+        {
+          key: "offboarded",
+          title: "Offboarded",
+          description: offboarded
+            ? `Offboarding stage reached and mandatory mail triggered to Candidate and Manager.`
+            : `Offboarding has not started yet.`,
+          status: offboarded ? "completed" : "pending"
+        },
+        {
+          key: "asset_returned",
+          title: "Asset Returned",
+          description: assetReturned
+            ? `All declared assets returned back and mandatory mail triggered to Candidate and Manager.`
+            : `Asset return stage is pending.`,
+          status: assetReturned ? "completed" : "pending"
+        }
+      ];
+
+      const firstActiveStep = taskSteps.findIndex((step) => step.status === "active");
+      if (firstActiveStep === -1) {
+        const firstPendingStep = taskSteps.findIndex((step) => step.status === "pending");
+        if (firstPendingStep !== -1) {
+          taskSteps[firstPendingStep].status = "active";
+        }
+      }
+
+      const completedCount = taskSteps.filter((step) => step.status === "completed").length;
+      const activeStep = taskSteps.find((step) => step.status === "active");
+      const progressPercent = Math.round((completedCount / taskSteps.length) * 100);
+
+      const currentStage = approved ? effectiveStage : "Onboarded";
+
+      const assetStatuses = [
+        {
+          name: "Laptop",
+          owner: "IT Team",
+          status: assetsInitiated ? "initiated" : "pending"
+        },
+        {
+          name: "ID Card",
+          owner: "Admin Team",
+          status: assetsInitiated ? "initiated" : "pending"
+        },
+        {
+          name: "Mail ID",
+          owner: "IT Team",
+          status: assetsInitiated ? "initiated" : "pending"
+        },
+        {
+          name: "Welcome Kit",
+          owner: "HR / Admin",
+          status: assetsInitiated ? "initiated" : "pending"
+        }
+      ];
+
+      return {
+        currentStage,
+        bcgRequired: "Mandatory",
+        bcgStatus: bcgDone ? "Completed" : "Pending",
+        progressRule: "Progress moves stage-by-stage: Onboarded -> BGC -> Asset Initiated -> Offboarded -> Asset Returned",
+        assets: assetStatuses,
+        stageSequence,
+        mailTriggers: [
+          {
+            title: "Onboarded Mail",
+            description: "Mandatory mail to Candidate and Manager when candidate is onboarded."
+          },
+          {
+            title: "BGC Mail",
+            description: "Mandatory mail to Candidate and Manager when BGC stage is completed."
+          },
+          {
+            title: "Asset Initiated Mail",
+            description: "Mandatory mail to Candidate and Manager when assets are initiated."
+          },
+          {
+            title: "Offboarded Mail",
+            description: "Mandatory mail to Candidate and Manager when offboarding is reached."
+          },
+          {
+            title: "Asset Returned Mail",
+            description: "Mandatory mail to Candidate and Manager when assets are returned back."
+          }
+        ],
+        taskSteps,
+        progressPercent,
+        progressText: activeStep ? `Current live step: ${activeStep.title}` : "All mapped stages completed.",
+        overviewValues: {
+          manager: screeningRecord?.managerName || normalizedRecord?.["PTL Reviewer"] || "Priti Mondal",
+          client: screeningRecord?.clientName || "Macquarie",
+          project: screeningRecord?.projectName || "Workforce Orchestrator",
+          queue: normalizedRecord?.["Workflow Queue"] || "Practitioner",
+          practitioner: normalizedRecord?.["Practitioner"] || candidateName,
+          practitionerEmail: normalizedRecord?.["Practitioner Email ID"] || `${candidateName.toLowerCase()}@ibm.com`,
+          statusLabel: normalizedRecord?.["Current Status"] || "Onboarded",
+          overallStatus: normalizedRecord?.["Overall Status"] || "Onboarding",
+          workflowType: isOffboarding ? "Offboarding" : "Onboarding",
+          sourceQueue: workflowQueue || "practitioner"
+        }
+      };
+    }
+
+    function renderWorkflowVisualization(record) {
+      const normalizedRecord = getApprovedOnboardingDisplayRecord(record);
+      const workflow = getWorkflowViewModel(normalizedRecord);
+
+      workflowCurrentStageValue.textContent = workflow.currentStage;
+      workflowBcgRequirementValue.textContent = workflow.bcgRequired;
+      workflowBcgStatusValue.textContent = workflow.bcgStatus;
+      workflowMailScopeValue.textContent = "Candidate, Manager";
+      workflowBcgRequiredFlag.textContent = workflow.bcgRequired;
+      workflowBcgDecisionValue.textContent = workflow.bcgStatus;
+      workflowProgressRuleValue.textContent = workflow.progressRule;
+      workflowProgressFill.style.width = `${workflow.progressPercent}%`;
+      workflowProgressPercent.textContent = `${workflow.progressPercent}%`;
+      workflowProgressText.textContent = workflow.progressText;
+
+      workflowStagePills.innerHTML = "";
+      const activeStageIndex = workflow.stageSequence.findIndex((stageName) => stageName === workflow.currentStage);
+      workflow.stageSequence.forEach((stageName, index) => {
+        const pill = document.createElement("button");
+        pill.type = "button";
+        pill.className = `stage-pill${index <= activeStageIndex ? " active" : ""}`;
+        pill.textContent = stageName;
+        pill.disabled = index > activeStageIndex + 1;
+        pill.addEventListener("click", async () => {
+          const candidateName = normalizedRecord?.["Name"] || activeCandidateName;
+          if (!candidateName) {
+            return;
+          }
+
+          persistWorkflowStage(candidateName, stageName);
+          syncOnboardingRecordsFromScreening();
+          refreshActiveCandidateWorkflow();
+          renderOnboardingCandidates();
+          bindCandidateNameLinks();
+
+          if (["Onboarded", "BGC", "Asset Initiated", "Offboarded"].includes(stageName)) {
+            await triggerRealtimeStageMail(candidateName, stageName);
+          }
+        });
+        workflowStagePills.appendChild(pill);
+      });
+
+      workflowAssetChecklist.innerHTML = "";
+      workflow.assets.forEach((asset) => {
+        const item = document.createElement("div");
+        item.className = "checklist-item";
+        item.innerHTML = `
+          <div>
+            <strong>${asset.name}</strong>
+            <span>Owner: ${asset.owner}</span>
+          </div>
+          <div class="status-chip ${asset.status === "initiated" ? "in-progress" : "pending"}">
+            ${asset.status === "initiated" ? "Initiated" : "Pending"}
+          </div>
+        `;
+        workflowAssetChecklist.appendChild(item);
+      });
+
+      workflowNotificationList.innerHTML = "";
+      workflow.mailTriggers.forEach((item) => {
+        const notificationItem = document.createElement("div");
+        notificationItem.className = "notification-item";
+        notificationItem.innerHTML = `
+          <strong>${item.title}</strong>
+          <span>${item.description}</span>
+        `;
+        workflowNotificationList.appendChild(notificationItem);
+      });
+
+      workflowTaskStepper.innerHTML = "";
+      workflow.taskSteps.forEach((step, index) => {
+        const stepElement = document.createElement("div");
+        const statusClass = step.status === "completed" ? "completed" : step.status === "active" ? "active-step" : "pending-step";
+        const statusText = step.status === "completed" ? "Completed" : step.status === "active" ? "In Progress" : "Pending";
+
+        stepElement.className = `task-step ${statusClass}`;
+        
+        // Build action button HTML if action exists
+        const actionButtonHTML = step.action ?
+          `<button class="bgv-action-btn" style="margin-top: 10px; padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">${step.action.label}</button>`
+          : '';
+        
+        stepElement.innerHTML = `
+          <div class="task-step-marker">${String(index + 1).padStart(2, "0")}</div>
+          <div style="flex: 1;">
+            <div class="task-step-title">${step.title}</div>
+            <div class="task-step-text">${step.description}</div>
+            ${actionButtonHTML}
+          </div>
+          <div class="status-chip ${step.status === "completed" ? "completed" : step.status === "active" ? "in-progress" : "pending"}">${statusText}</div>
+        `;
+        
+        // Add click handler for action button if it exists
+        if (step.action) {
+          const actionBtn = stepElement.querySelector('.bgv-action-btn');
+          if (actionBtn) {
+            actionBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              step.action.handler();
+            });
+          }
+        }
+        
+        workflowTaskStepper.appendChild(stepElement);
+      });
+    }
+
+    function getNormalizedDetailRecord(record) {
+      return getApprovedOnboardingDisplayRecord(record);
+    }
+
+    function setDetailValues(record) {
+      const safeRecord = getNormalizedDetailRecord(record);
+      const workflow = getWorkflowViewModel(safeRecord);
+      activeCandidateName = safeRecord["Name"] || "";
+      detailHeader.textContent = safeRecord["Name"]
+        ? `${safeRecord["ID"] || ""} : ${safeRecord["Checklist Type"] || ""} of ${safeRecord["Name"] || ""}`
+        : "";
+
+      overviewManagerValue.textContent = workflow.overviewValues.manager || "";
+      overviewClientValue.textContent = workflow.overviewValues.client || "";
+      overviewProjectValue.textContent = workflow.overviewValues.project || "";
+      overviewStatusValue.textContent = workflow.overviewValues.statusLabel || "";
+
+      detailIdValue.textContent = safeRecord["ID"] || "";
+      detailChecklistTypeValue.textContent = safeRecord["Checklist Type"] || "";
+      detailPmoValue.textContent = safeRecord["PMO"] || "";
+      detailPtlReviewerValue.textContent = safeRecord["PTL Reviewer"] || "";
+      detailCurrentStatusValue.textContent = safeRecord["Current Status"] || "";
+      detailDateInitiatedValue.textContent = safeRecord["Date Initiated"] || "";
+      detailPractitionerLoginIdValue.textContent = safeRecord["Practitioner Login ID"] || "";
+      detailPractitionerEmailIdValue.textContent = safeRecord["Practitioner Email ID"] || "";
+      detailNameValue.textContent = safeRecord["Name"] || "";
+      detailPractitionerValue.textContent = safeRecord["Practitioner"] || "";
+      detailDspReviewerValue.textContent = safeRecord["DSP Reviewer"] || "";
+      detailPractitionerDelegateValue.textContent = safeRecord["Practitioner Delegate"] || "";
+      detailOverallStatusValue.textContent = safeRecord["Overall Status"] || "";
+      detailDueDateValue.textContent = safeRecord["Due Date"] || "";
+      detailWorkflowQueueValue.textContent = safeRecord["Workflow Queue"] || "";
+      detailDocumentsValue.textContent = safeRecord["Documents"] || "";
+      renderWorkflowVisualization(safeRecord);
+    }
+
+    function parseCsvLine(line) {
+      const values = [];
+      let current = "";
+      let inQuotes = false;
+
+      for (let index = 0; index < line.length; index += 1) {
+        const char = line[index];
+        if (char === '"') {
+          if (inQuotes && line[index + 1] === '"') {
+            current += '"';
+            index += 1;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === "," && !inQuotes) {
+          values.push(current.trim());
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+
+      values.push(current.trim());
+      return values;
+    }
+
+    function buildRecordsFromCsvText(csvText) {
+      const lines = csvText
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0);
+
+      if (lines.length < 2) {
+        return [];
+      }
+
+      const headers = parseCsvLine(lines[0]);
+
+      return lines.slice(1).map((line) => {
+        const values = parseCsvLine(line);
+        const record = {};
+        headers.forEach((header, index) => {
+          record[header] = values[index] || "";
+        });
+        return record;
+      });
+    }
+
+    const SCREENING_STATUS_STORAGE_KEY = "workforce_orchestrator_screening_statuses";
+
+    function loadPersistedScreeningStatuses() {
+      try {
+        return JSON.parse(localStorage.getItem(SCREENING_STATUS_STORAGE_KEY) || "{}");
+      } catch (error) {
+        console.warn("Unable to parse persisted screening statuses", error);
+        return {};
+      }
+    }
+
+    function persistScreeningStatuses() {
+      const persistedStatuses = {};
+      screeningRecords.forEach((record) => {
+        persistedStatuses[record.candidateName] = record.status;
+      });
+      localStorage.setItem(SCREENING_STATUS_STORAGE_KEY, JSON.stringify(persistedStatuses));
+    }
+
+    function applyPersistedScreeningStatuses(records) {
+      const persistedStatuses = loadPersistedScreeningStatuses();
+      return records.map((record) => ({
+        ...record,
+        status: persistedStatuses[record.candidateName] || record.status
+      }));
+    }
+
+    function buildEmbeddedDetailData() {
+      const csvText = `ID,Checklist Type,PMO,PTL Reviewer,Current Status,Date Initiated,Practitioner Login ID,Practitioner Email ID,Name,Practitioner,DSP Reviewer,Practitioner Delegate,Overall Status,Due Date,Workflow Queue,Documents
+ONBC1,Offboarding,Priti Mondal,Srikanth Rao,Asset Returned,03-Apr-26,769EBC680,anil@ibm.com,Anil,Anil,Anitha Indrakanti,Harsha V,Closed,13-Apr-26,Practitioner,Onboarding Training/Reference Documents
+ONBC2,Offboarding,Priti Mondal,Rajesh Mani,Offboarded,06-Apr-26,905EBC192,sony@ibm.com,Sony,Sony,Rohit Sharma,Karthik P,Open,12-Apr-26,Practitioner,Onboarding Training/Reference Documents
+ONBC3,Offboarding,Priti Mondal,Swetha Nair,Asset Returned,07-Mar-26,476EBC790,sarah@ibm.com,Sarah,Sarah,Meera Nair,Deepa R,Closed,10-Mar-26,Practitioner,Onboarding Training/Reference Documents
+ONBC4,Offboarding,Priti Mondal,Swetha Nair,Offboarded,12-Mar-26,902EBC139,dheeraj@ibm.com,Dheeraj,Dheeraj,Meera Nair,Ajay K,Closed,01-Apr-26,Practitioner,Onboarding Training/Reference Documents
+ONBC5,Offboarding,Priti Mondal,Srikanth Rao,BCG Completed,13-Feb-26,625EBC646,kiran@ibm.com,Kiran,Kiran,Anitha Indrakanti,Harsha V,Open,10-Mar-26,Practitioner,Onboarding Training/Reference Documents
+ONBC6,Offboarding,Priti Mondal,Rajesh Mani,Asset Initiated,08-Mar-26,383EBC926,ravi@ibm.com,Ravi,Ravi,Rohit Sharma,Karthik P,Open,26-Mar-26,Practitioner,Onboarding Training/Reference Documents
+ONBC7,Onboarding,Priti Mondal,Srikanth Rao,Onboarded,03-Feb-26,181EBC832,megha@ibm.com,Megha,Megha,Anitha Indrakanti,Harsha V,Closed,12-Feb-26,Practitioner,Onboarding Training/Reference Documents
+ONBC8,Onboarding,Priti Mondal,Srikanth Rao,BCG Completed,25-Jan-26,627EBC821,arjun@ibm.com,Arjun,Arjun,Anitha Indrakanti,Harsha V,Closed,16-Feb-26,Practitioner,Onboarding Training/Reference Documents
+ONBC9,Offboarding,Priti Mondal,Srikanth Rao,Offboarded,10-Jan-26,233EBC411,nina@ibm.com,Nina,Nina,Anitha Indrakanti,Harsha V,Closed,18-Jan-26,Practitioner,Onboarding Training/Reference Documents
+ONBC10,Onboarding,Priti Mondal,Swetha Nair,Asset Initiated,10-Mar-26,582EBC460,vikram@ibm.com,Vikram,Vikram,Meera Nair,Ajay K,Closed,26-Mar-26,Practitioner,Onboarding Training/Reference Documents`;
+
+      return buildRecordsFromCsvText(csvText);
+    }
+
+    function buildProfileScreeningRecords() {
+      return [
+        {
+          candidateName: "Anil GenAI",
+          employeeId: "491EBC751",
+          role: "GenAI Developer",
+          skill: "OpenAI, Azure OpenAI, Gemini, Hugging Face Transformers, LangChain, LlamaIndex, Prompt Engineering, RAG, Fine-tuning, Embeddings, FAISS, Pinecone, ChromaDB, Python, JavaScript",
+          experience: "5 years",
+          cvUploaded: "Yes",
+          projectName: "Intelligent Document Q&A System; AI Code Assistant; Customer Support Chatbot",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated",
+          email: "anil.kumar@email.com",
+          phone: "+91-9876543210"
+        },
+        {
+          candidateName: "Anil Kumar",
+          employeeId: "994EBC987",
+          role: "Data Engineer",
+          skill: "Python, SQL, Spark, Kafka, AWS, Azure, ETL, Data Pipelines, Cloud, AI/ML",
+          experience: "5 years",
+          cvUploaded: "Yes",
+          projectName: "Large-scale Data Pipeline; Real-time Analytics Platform; Cloud Data Migration",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated",
+          email: "manilkumar1909@gmail.com",
+          phone: "N/A"
+        },
+        {
+          candidateName: "Arjun",
+          employeeId: "433EBC223",
+          role: "Software Engineer",
+          skill: "Java, Spring Boot, Microservices, Redis, Docker, SQL, REST APIs",
+          experience: "10 years",
+          cvUploaded: "Yes",
+          projectName: "High-scale Payment Processing System; Backend Latency Optimization; Microservices Architecture Modernization",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Dheeraj",
+          employeeId: "474EBC322",
+          role: "Software Engineer",
+          skill: "LangChain, OpenAI API, RAG, FAISS, Python, Azure OpenAI, Prompt Engineering",
+          experience: "12 years",
+          cvUploaded: "Yes",
+          projectName: "RAG Chatbot; Document Intelligence System; Prompt Optimization for LLM Cost Reduction",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Kiran",
+          employeeId: "527EBC721",
+          role: "Software Engineer",
+          skill: "Python, Scikit-learn, XGBoost, SQL, Statistics, Pandas, Data Modeling",
+          experience: "10 years",
+          cvUploaded: "Yes",
+          projectName: "Customer Churn Prediction Model; Time-series Forecasting Models; Experimentation and A/B Testing Frameworks",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Megha",
+          employeeId: "305EBC673",
+          role: "Software Engineer",
+          skill: "Power BI, Tableau, SQL, Excel, Data Visualization, ETL",
+          experience: "10 years",
+          cvUploaded: "Yes",
+          projectName: "Executive Dashboards in Power BI; KPI Tracking Frameworks; Reporting Process Automation",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Nina",
+          employeeId: "793EBC982",
+          role: "Software Engineer",
+          skill: "React, TypeScript, Next.js, CSS, UI/UX, Frontend Performance",
+          experience: "9 years",
+          cvUploaded: "Yes",
+          projectName: "Single-page Application Optimization; UI Redesign Initiative; API-driven Frontend Integration",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Ravi",
+          employeeId: "594EBC693",
+          role: "Software Engineer",
+          skill: "Apache Spark, Kafka, AWS, Airflow, ETL, Data Lakes, Python",
+          experience: "9 years",
+          cvUploaded: "Yes",
+          projectName: "Large-scale ETL Pipelines; Real-time Streaming Pipelines; Data Warehouse Query Optimization",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Sarah",
+          employeeId: "338EBC771",
+          role: "Software Engineer",
+          skill: "React, Node.js, TypeScript, PostgreSQL, Azure, REST APIs, System Design, Redis",
+          experience: "10 years",
+          cvUploaded: "Yes",
+          projectName: "Scalable SaaS Platform; Real-time Analytics Dashboard; Azure Cloud-native Migration",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Sony",
+          employeeId: "950EBC940",
+          role: "Software Engineer",
+          skill: "PyTorch, TensorFlow, OpenCV, NLP, MLOps, AWS SageMaker, Docker, Kubernetes",
+          experience: "9 years",
+          cvUploaded: "Yes",
+          projectName: "Enterprise Image Recognition System; NLP Sentiment Analysis Pipeline; MLOps Deployment Automation",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Vikram",
+          employeeId: "325EBC508",
+          role: "Software Engineer",
+          skill: "AWS, Azure, Kubernetes, Terraform, CI/CD, Cloud Architecture",
+          experience: "11 years",
+          cvUploaded: "Yes",
+          projectName: "Enterprise Cloud Migration; CI/CD Pipeline Implementation; Highly Available Cloud Infrastructure Design",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        },
+        {
+          candidateName: "Vilas Rakhe",
+          employeeId: "954EBC351",
+          role: "Software Engineer",
+          skill: "Python, Java, Cloud, AI/ML, System Design, Microservices",
+          experience: "6 years",
+          cvUploaded: "Yes",
+          projectName: "Cloud-native Application Development; Microservices Architecture; API Gateway Implementation",
+          clientName: "Macquarie",
+          managerName: "Priti Mondal",
+          status: "Nominated"
+        }
+      ];
+    }
+
+    function hydrateDetailIndexes(records) {
+      allCandidateRecords = records.map((record) => ({
+        ...record,
+        Source: "CSV / Excel"
+      }));
+
+      onboardingCandidateRecords = allCandidateRecords.filter((record) => {
+        const screeningRecord = screeningRecords.find(
+          (item) => item.candidateName.toLowerCase() === (record.Name || "").toLowerCase()
+        );
+        return screeningRecord && screeningRecord.status === "Approve";
+      });
+
+      detailRecordsByName = {};
+      allCandidateRecords.forEach((record) => {
+        if (record.Name) {
+          detailRecordsByName[record.Name.toLowerCase()] = record;
+        }
+      });
+
+      populateFilterOptions();
+    }
+
+    function populateScreeningSelectOptions(selectElement, values, defaultLabel) {
+      const currentValue = selectElement.value;
+      selectElement.innerHTML = `<option value="">${defaultLabel}</option>`;
+      values.forEach((value) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        selectElement.appendChild(option);
+      });
+      selectElement.value = values.includes(currentValue) ? currentValue : "";
+    }
+
+    function populateScreeningFilterOptions() {
+      const skills = [...new Set(screeningRecords.map((record) => record.skill).filter(Boolean))].sort();
+      const projects = [...new Set(screeningRecords.map((record) => record.projectName).filter(Boolean))].sort();
+      const clients = [...new Set(screeningRecords.map((record) => record.clientName).filter(Boolean))].sort();
+      const statuses = [...new Set(screeningRecords.map((record) => record.status).filter(Boolean))].sort();
+
+      populateScreeningSelectOptions(screeningSkillFilter, skills, "All Skills");
+      populateScreeningSelectOptions(screeningProjectFilter, projects, "All Projects");
+      populateScreeningSelectOptions(screeningClientFilter, clients, "All Clients");
+      populateScreeningSelectOptions(screeningStatusFilter, statuses, "All Statuses");
+      if (!screeningSortFilter.value) {
+        screeningSortFilter.value = "name-asc";
+      }
+    }
+
+    function extractExperienceYears(experienceValue) {
+      const matchedValue = String(experienceValue || "").match(/(\d+(\.\d+)?)/);
+      return matchedValue ? Number(matchedValue[1]) : 0;
+    }
+
+    function matchesExperienceFilter(experienceValue, filterValue) {
+      const normalizedFilter = filterValue.trim().replace(/\s+/g, "");
+      if (!normalizedFilter) {
+        return true;
+      }
+
+      const years = extractExperienceYears(experienceValue);
+
+      if (normalizedFilter.endsWith("+")) {
+        return years >= Number(normalizedFilter.slice(0, -1));
+      }
+      if (normalizedFilter.startsWith(">=")) {
+        return years >= Number(normalizedFilter.slice(2));
+      }
+      if (normalizedFilter.startsWith("<=")) {
+        return years <= Number(normalizedFilter.slice(2));
+      }
+      if (normalizedFilter.startsWith(">")) {
+        return years > Number(normalizedFilter.slice(1));
+      }
+      if (normalizedFilter.startsWith("<")) {
+        return years < Number(normalizedFilter.slice(1));
+      }
+      return years === Number(normalizedFilter);
+    }
+
+    function getFilteredScreeningRecords() {
+      const serialValue = screeningSerialFilter.value.trim();
+      const nameValue = screeningNameFilter.value.trim().toLowerCase();
+      const employeeIdValue = screeningEmployeeIdFilter.value.trim().toLowerCase();
+      const skillValue = screeningSkillFilter.value;
+      const experienceValue = screeningExperienceFilter.value.trim();
+      const cvValue = screeningCvFilter.value;
+      const projectValue = screeningProjectFilter.value;
+      const clientValue = screeningClientFilter.value;
+      const managerValue = screeningManagerFilter.value.trim().toLowerCase();
+      const statusValue = screeningStatusFilter.value;
+      const sortValue = screeningSortFilter.value;
+
+      const filteredRecords = screeningRecords.filter((record, index) => {
+        const serialNumber = String(index + 1).padStart(2, "0");
+        const matchesSerial = !serialValue || serialNumber.includes(serialValue);
+        const matchesName = !nameValue || record.candidateName.toLowerCase().includes(nameValue);
+        const matchesEmployeeId = !employeeIdValue || record.employeeId.toLowerCase().includes(employeeIdValue);
+        const matchesSkill = !skillValue || record.skill === skillValue;
+        const matchesExperience = matchesExperienceFilter(record.experience, experienceValue);
+        const matchesCv = !cvValue || record.cvUploaded === cvValue;
+        const matchesProject = !projectValue || record.projectName === projectValue;
+        const matchesClient = !clientValue || record.clientName === clientValue;
+        const matchesManager = !managerValue || record.managerName.toLowerCase().includes(managerValue);
+        const matchesStatus = !statusValue || record.status === statusValue;
+        return matchesSerial && matchesName && matchesEmployeeId && matchesSkill && matchesExperience && matchesCv && matchesProject && matchesClient && matchesManager && matchesStatus;
+      });
+
+      filteredRecords.sort((left, right) => {
+        if (sortValue === "name-desc") {
+          return (right.candidateName || "").localeCompare(left.candidateName || "");
+        }
+        if (sortValue === "employee-asc") {
+          return (left.employeeId || "").localeCompare(right.employeeId || "");
+        }
+        if (sortValue === "experience-asc") {
+          return extractExperienceYears(left.experience) - extractExperienceYears(right.experience);
+        }
+        if (sortValue === "skill-asc") {
+          return (left.skill || "").localeCompare(right.skill || "");
+        }
+        if (sortValue === "project-asc") {
+          return (left.projectName || "").localeCompare(right.projectName || "");
+        }
+        if (sortValue === "client-asc") {
+          return (left.clientName || "").localeCompare(right.clientName || "");
+        }
+        if (sortValue === "manager-asc") {
+          return (left.managerName || "").localeCompare(right.managerName || "");
+        }
+        if (sortValue === "status-asc") {
+          return (left.status || "").localeCompare(right.status || "");
+        }
+        return (left.candidateName || "").localeCompare(right.candidateName || "");
+      });
+
+      return filteredRecords;
+    }
+
+    function syncOnboardingRecordsFromScreening() {
+      // Get approved screening records
+      const approvedScreeningRecords = screeningRecords.filter(
+        (item) => item.status === "Approve"
+      );
+
+      // Create onboarding records from approved screening records
+      onboardingCandidateRecords = approvedScreeningRecords.map((screeningRecord) => {
+        // Try to find matching CSV record
+        const csvRecord = allCandidateRecords.find(
+          (record) => (record.Name || "").toLowerCase() === screeningRecord.candidateName.toLowerCase()
+        );
+
+        // If CSV record exists, use it; otherwise create from screening record
+        if (csvRecord) {
+          return {
+            ...getApprovedOnboardingDisplayRecord(csvRecord),
+            screeningLockedStatus: "Approve"
+          };
+        } else {
+          // Create onboarding record from screening record
+          const newRecord = {
+            Name: screeningRecord.candidateName,
+            "Employee ID": screeningRecord.employeeId,
+            "Role": screeningRecord.role || "Software Engineer",
+            "Experience": screeningRecord.experience,
+            "Skills": screeningRecord.skill || screeningRecord.skills || "N/A",
+            "Location": screeningRecord.location || "Bangalore",
+            "Project Name": screeningRecord.projectName || "N/A",
+            "Client Name": screeningRecord.clientName || "Macquarie",
+            "Manager Name": screeningRecord.managerName || "Priti Mondal",
+            "Checklist Type": "Onboarding",
+            "Current Status": "Onboarded",
+            "Practitioner": screeningRecord.candidateName,
+            "Practitioner Email ID": screeningRecord.email || `${screeningRecord.candidateName.toLowerCase().replace(/\s+/g, '.')}@example.com`,
+            "Practitioner Phone": screeningRecord.phone || "N/A",
+            "Practitioner Login ID": screeningRecord.employeeId,
+            "Workflow Queue": "Practitioner",
+            "Source": "Resume Folder",
+            screeningLockedStatus: "Approve"
+          };
+          
+          // Add to detailRecordsByName so it can be accessed
+          detailRecordsByName[screeningRecord.candidateName.toLowerCase()] = newRecord;
+          
+          return newRecord;
+        }
+      });
+
+      populateFilterOptions();
+      renderOnboardingCandidates();
+      bindCandidateNameLinks();
+    }
+
+    function refreshActiveCandidateWorkflow() {
+      if (!activeCandidateName) {
+        return;
+      }
+
+      const activeRecord = detailRecordsByName[activeCandidateName.toLowerCase()];
+      if (activeRecord) {
+        renderWorkflowVisualization(activeRecord);
+      }
+    }
+
+    function renderProfileScreeningTable() {
+      profileScreeningTableBody.innerHTML = "";
+      const visibleRecords = getFilteredScreeningRecords();
+
+      visibleRecords.forEach((record, index) => {
+        const row = document.createElement("tr");
+        const skillItems = String(record.skill || "")
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean);
+        const projectItems = String(record.projectName || "")
+          .split(";")
+          .map((item) => item.trim())
+          .filter(Boolean);
+
+        const skillSummary = skillItems.slice(0, 3).join(", ");
+        const projectSummary = projectItems.slice(0, 2).join("; ");
+
+        row.innerHTML = `
+          <td>${String(index + 1).padStart(2, "0")}</td>
+          <td>${record.candidateName}</td>
+          <td>${record.employeeId}</td>
+          <td>
+            <div class="compact-hover-cell">
+              <div class="compact-hover-summary">${skillSummary || record.skill || ""}</div>
+              <div class="compact-hover-popover">
+                <div class="compact-hover-title">Skillset</div>
+                <ul class="compact-hover-list">
+                  ${skillItems.map((item) => `<li>${item}</li>`).join("")}
+                </ul>
+              </div>
+            </div>
+          </td>
+          <td>${record.experience}</td>
+          <td><span class="cv-badge">${record.cvUploaded}</span></td>
+          <td><button type="button" class="download-btn" data-candidate="${record.candidateName}">⬇ Download</button></td>
+          <td>
+            <div class="compact-hover-cell">
+              <div class="compact-hover-summary">${projectSummary || record.projectName || ""}</div>
+              <div class="compact-hover-popover">
+                <div class="compact-hover-title">Project Experience</div>
+                <ul class="compact-hover-list">
+                  ${projectItems.map((item) => `<li>${item}</li>`).join("")}
+                </ul>
+              </div>
+            </div>
+          </td>
+          <td>${record.clientName}</td>
+          <td>${record.managerName}</td>
+          <td style="min-width: 150px;">
+            <select class="status-select status-${record.status.toLowerCase()}" data-candidate="${record.candidateName}">
+              <option ${record.status === "Nominated" ? "selected" : ""}>Nominated</option>
+              <option ${record.status === "Approve" ? "selected" : ""}>Approve</option>
+              <option ${record.status === "Hold" ? "selected" : ""}>Hold</option>
+              <option ${record.status === "Reject" ? "selected" : ""}>Reject</option>
+            </select>
+          </td>
+        `;
+        profileScreeningTableBody.appendChild(row);
+      });
+
+      const statusSelectors = profileScreeningTableBody.querySelectorAll(".status-select");
+      statusSelectors.forEach((selectElement) => {
+        selectElement.addEventListener("change", () => {
+          const candidateName = selectElement.dataset.candidate;
+          const record = screeningRecords.find((item) => item.candidateName === candidateName);
+          if (record) {
+            record.status = selectElement.value;
+            persistScreeningStatuses();
+            selectElement.className = `status-select status-${selectElement.value.toLowerCase()}`;
+            syncOnboardingRecordsFromScreening();
+            refreshActiveCandidateWorkflow();
+            renderProfileScreeningTable();
+          }
+        });
+      });
+
+      const screeningDownloadButtons = profileScreeningTableBody.querySelectorAll(".download-btn[data-candidate]");
+      screeningDownloadButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+          const candidateName = button.dataset.candidate;
+          if (!Object.keys(detailRecordsByName).length) {
+            await loadDetailData();
+          }
+          downloadCandidateResume(candidateName);
+        });
+      });
+    }
+
+    function populateSelectOptions(selectElement, values, defaultLabel) {
+      const currentValue = selectElement.value;
+      selectElement.innerHTML = `<option value="">${defaultLabel}</option>`;
+      values.forEach((value) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        selectElement.appendChild(option);
+      });
+      selectElement.value = values.includes(currentValue) ? currentValue : "";
+    }
+
+    function populateFilterOptions() {
+      const checklistTypes = [...new Set(onboardingCandidateRecords.map((record) => record["Checklist Type"]).filter(Boolean))].sort();
+      const statuses = [...new Set(onboardingCandidateRecords.map((record) => record["Current Status"]).filter(Boolean))].sort();
+      const sources = [...new Set(onboardingCandidateRecords.map((record) => record.Source).filter(Boolean))].sort();
+
+      populateSelectOptions(checklistTypeFilter, checklistTypes, "All Checklist Types");
+      populateSelectOptions(currentStatusFilter, statuses, "All Statuses");
+      populateSelectOptions(sourceFilter, sources, "All Sources");
+    }
+
+    function getFilteredAndSortedCandidates() {
+      const nameValue = candidateNameFilter.value.trim().toLowerCase();
+      const checklistValue = checklistTypeFilter.value;
+      const statusValue = currentStatusFilter.value;
+      const sourceValue = sourceFilter.value;
+      const sortValue = sortFilter.value;
+
+      const filteredRecords = onboardingCandidateRecords.filter((record) => {
+        const matchesName = !nameValue || (record.Name || "").toLowerCase().includes(nameValue);
+        const matchesChecklist = !checklistValue || (record["Checklist Type"] || "") === checklistValue;
+        const matchesStatus = !statusValue || (record["Current Status"] || "") === statusValue;
+        const matchesSource = !sourceValue || (record.Source || "") === sourceValue;
+        return matchesName && matchesChecklist && matchesStatus && matchesSource;
+      });
+
+      filteredRecords.sort((left, right) => {
+        if (sortValue === "name-desc") {
+          return (right.Name || "").localeCompare(left.Name || "");
+        }
+        if (sortValue === "checklist-asc") {
+          return (left["Checklist Type"] || "").localeCompare(right["Checklist Type"] || "");
+        }
+        if (sortValue === "status-asc") {
+          return (left["Current Status"] || "").localeCompare(right["Current Status"] || "");
+        }
+        if (sortValue === "source-asc") {
+          return (left.Source || "").localeCompare(right.Source || "");
+        }
+        return (left.Name || "").localeCompare(right.Name || "");
+      });
+
+      return filteredRecords;
+    }
+
+    function renderOnboardingCandidates() {
+      onboardingCandidateTableBody.innerHTML = "";
+      const visibleRecords = getFilteredAndSortedCandidates();
+
+      visibleRecords.forEach((record, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${String(index + 1).padStart(2, "0")}</td>
+          <td><a href="#" class="candidate-name-link" data-candidate="${record.Name}">${record.Name}</a></td>
+          <td>${record["Checklist Type"] || ""}</td>
+          <td>${record["Current Status"] || ""}</td>
+          <td>${record.Source || ""}</td>
+        `;
+        onboardingCandidateTableBody.appendChild(row);
+      });
+
+      if (!visibleRecords.length) {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td colspan="5" style="text-align: center; color: #64748b; padding: 18px;">
+            No approved profiles available in Onboarding. Approve candidates in Profile Screening to move them here.
+          </td>
+        `;
+        onboardingCandidateTableBody.appendChild(row);
+      }
+
+      const total = visibleRecords.length;
+      onboardingCandidateCount.textContent = total ? `1-${total} of ${total}` : "0-0 of 0";
+    }
+
+    function activateCandidateTabs(containerId) {
+      const tabContainer = document.getElementById(containerId);
+      if (!tabContainer) {
+        return;
+      }
+
+      const tabs = tabContainer.querySelectorAll(".candidate-tab, .screening-tab");
+      const targetPanelIds = Array.from(tabs)
+        .map((tab) => tab.dataset.tabTarget)
+        .filter(Boolean);
+      const scopedPanels = targetPanelIds
+        .map((panelId) => document.getElementById(panelId))
+        .filter(Boolean);
+
+      tabs.forEach((tab) => {
+        if (tab.dataset.bound === "true") {
+          return;
+        }
+
+        tab.dataset.bound = "true";
+        tab.addEventListener("click", () => {
+          tabs.forEach((item) => item.classList.remove("active"));
+          tab.classList.add("active");
+
+          scopedPanels.forEach((panel) => panel.classList.remove("active"));
+
+          const targetPanel = document.getElementById(tab.dataset.tabTarget);
+          if (targetPanel) {
+            targetPanel.classList.add("active");
+          }
+        });
+      });
+    }
+
+    function buildPdfLine(text, xPosition, yPosition, fontSize = 12) {
+      return `BT /F1 ${fontSize} Tf ${xPosition} ${yPosition} Td (${text}) Tj ET`;
+    }
+
+    function sanitizePdfText(value) {
+      return String(value ?? "")
+        .replace(/\\/g, "\\\\")
+        .replace(/\(/g, "\\(")
+        .replace(/\)/g, "\\)")
+        .replace(/[^\x20-\x7E]/g, " ");
+    }
+
+    function triggerPdfDownload(fileName, lines) {
+      const textStream = lines.join("\n");
+      const pdfStream = `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length ${textStream.length} >>
+stream
+${textStream}
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000010 00000 n
+0000000063 00000 n
+0000000122 00000 n
+0000000248 00000 n
+0000000318 00000 n
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+${318 + textStream.length + 24}
+%%EOF`;
+
+      const blob = new Blob([pdfStream], { type: "application/pdf" });
+      const downloadUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    }
+
+    function downloadCandidateResume(candidateName) {
+      const record = screeningRecords.find((item) => item.candidateName === candidateName);
+      const detailRecord = detailRecordsByName[candidateName.toLowerCase()] || {};
+      const pdfLines = [
+        buildPdfLine(sanitizePdfText(`${candidateName} - Resume`), 60, 740, 18),
+        buildPdfLine(sanitizePdfText(`Candidate Name: ${candidateName}`), 60, 700),
+        buildPdfLine(sanitizePdfText(`Employee ID: ${record?.employeeId || "N/A"}`), 60, 678),
+        buildPdfLine(sanitizePdfText(`Skill: ${record?.skill || "N/A"}`), 60, 656),
+        buildPdfLine(sanitizePdfText(`Experience: ${record?.experience || "N/A"}`), 60, 634),
+        buildPdfLine(sanitizePdfText(`Project: ${record?.projectName || "N/A"}`), 60, 612),
+        buildPdfLine(sanitizePdfText(`Client: ${record?.clientName || "N/A"}`), 60, 590),
+        buildPdfLine(sanitizePdfText(`Manager: ${record?.managerName || "N/A"}`), 60, 568),
+        buildPdfLine(sanitizePdfText(`Practitioner Email: ${detailRecord["Practitioner Email ID"] || "N/A"}`), 60, 546),
+        buildPdfLine(sanitizePdfText(`Checklist Type: ${detailRecord["Checklist Type"] || "N/A"}`), 60, 524),
+        buildPdfLine(sanitizePdfText(`Workflow Queue: ${detailRecord["Workflow Queue"] || "N/A"}`), 60, 502),
+        buildPdfLine(sanitizePdfText(`Overall Status: ${detailRecord["Overall Status"] || record?.status || "N/A"}`), 60, 480)
+      ];
+
+      triggerPdfDownload(`${candidateName.replace(/\s+/g, "_")}_Resume.pdf`, pdfLines);
+    }
+
+    function openCandidateDetails(candidateName) {
+      const normalizedName = String(candidateName || "").trim().toLowerCase();
+      const record = detailRecordsByName[normalizedName] || null;
+      activateSection("myProjectsSection");
+      myProjectsCard.style.display = "none";
+      profileScreeningDashboard.classList.remove("active-dashboard");
+      onboardedDashboard.classList.remove("active-dashboard");
+      onboardingDashboard.classList.remove("active-dashboard");
+      detailDashboard.classList.add("active-dashboard");
+      profileScreeningStageBtn.classList.remove("active");
+      onboardingStageBtn.classList.add("active");
+      planToggle.classList.add("active");
+      setDetailValues(record);
+    }
+
+    function bindCandidateNameLinks() {
+      const dynamicCandidateLinks = document.querySelectorAll(".candidate-name-link");
+      dynamicCandidateLinks.forEach((link) => {
+        link.onclick = async (event) => {
+          event.preventDefault();
+          const candidateName = link.dataset.candidate;
+          if (!Object.keys(detailRecordsByName).length) {
+            await loadDetailData();
+          }
+          openCandidateDetails(candidateName);
+        };
+      });
+
+      const downloadButtons = document.querySelectorAll(".download-btn[data-candidate]");
+      downloadButtons.forEach((button) => {
+        button.onclick = async () => {
+          const candidateName = button.dataset.candidate;
+          if (!Object.keys(detailRecordsByName).length) {
+            await loadDetailData();
+          }
+          downloadCandidateResume(candidateName);
+        };
+      });
+    }
+
+    async function loadDetailData() {
+      try {
+        const response = await fetch("./data/onboarding_offboarding_details.csv");
+        if (!response.ok) {
+          throw new Error(`Unable to load CSV: ${response.status}`);
+        }
+
+        const csvText = await response.text();
+        const lines = csvText
+          .split(/\r?\n/)
+          .map((line) => line.trim())
+          .filter((line) => line.length > 0);
+
+        if (lines.length < 2) {
+          const fallbackRecords = buildEmbeddedDetailData();
+          hydrateDetailIndexes(fallbackRecords);
+          renderOnboardingCandidates();
+          bindCandidateNameLinks();
+          return;
+        }
+
+        screeningRecords = applyPersistedScreeningStatuses(buildProfileScreeningRecords());
+        const loadedRecords = buildRecordsFromCsvText(csvText);
+        hydrateDetailIndexes(loadedRecords);
+        renderOnboardingCandidates();
+        bindCandidateNameLinks();
+        renderProfileScreeningTable();
+        activateCandidateTabs("activityTabs");
+        activateCandidateTabs("detailTabs");
+        activateCandidateTabs("screeningTabs");
+      } catch (error) {
+        console.warn("CSV fetch failed, using embedded detail data fallback", error);
+        screeningRecords = applyPersistedScreeningStatuses(buildProfileScreeningRecords());
+        const fallbackRecords = buildEmbeddedDetailData();
+        hydrateDetailIndexes(fallbackRecords);
+        renderOnboardingCandidates();
+        bindCandidateNameLinks();
+        renderProfileScreeningTable();
+        activateCandidateTabs("activityTabs");
+        activateCandidateTabs("detailTabs");
+        activateCandidateTabs("screeningTabs");
+      }
+    }
+
+    candidateNameFilter.addEventListener("input", renderOnboardingCandidates);
+    checklistTypeFilter.addEventListener("change", renderOnboardingCandidates);
+    currentStatusFilter.addEventListener("change", renderOnboardingCandidates);
+    sourceFilter.addEventListener("change", renderOnboardingCandidates);
+    sortFilter.addEventListener("change", renderOnboardingCandidates);
+    screeningSerialFilter.addEventListener("input", renderProfileScreeningTable);
+    screeningNameFilter.addEventListener("input", renderProfileScreeningTable);
+    screeningEmployeeIdFilter.addEventListener("input", renderProfileScreeningTable);
+    screeningSkillFilter.addEventListener("change", renderProfileScreeningTable);
+    screeningExperienceFilter.addEventListener("input", renderProfileScreeningTable);
+    screeningCvFilter.addEventListener("change", renderProfileScreeningTable);
+    screeningProjectFilter.addEventListener("change", renderProfileScreeningTable);
+    screeningClientFilter.addEventListener("change", renderProfileScreeningTable);
+    screeningManagerFilter.addEventListener("input", renderProfileScreeningTable);
+    screeningStatusFilter.addEventListener("change", renderProfileScreeningTable);
+    screeningSortFilter.addEventListener("change", renderProfileScreeningTable);
+
+    function showProfileScreeningStage() {
+      profileScreeningDashboard.classList.add("active-dashboard");
+      onboardedDashboard.classList.remove("active-dashboard");
+      detailDashboard.classList.remove("active-dashboard");
+      profileScreeningStageBtn.classList.add("active");
+      onboardingStageBtn.classList.remove("active");
+      myProjectsCard.style.display = "none";
+    }
+
+    function showOnboardingStage() {
+      profileScreeningDashboard.classList.remove("active-dashboard");
+      onboardedDashboard.classList.add("active-dashboard");
+      detailDashboard.classList.remove("active-dashboard");
+      profileScreeningStageBtn.classList.remove("active");
+      onboardingStageBtn.classList.add("active");
+      myProjectsCard.style.display = "none";
+    }
+
+    function hideProjectDashboard() {
+      onboardingDashboard.classList.remove("active-dashboard");
+      profileScreeningDashboard.classList.remove("active-dashboard");
+      onboardedDashboard.classList.remove("active-dashboard");
+      detailDashboard.classList.remove("active-dashboard");
+      myProjectsCard.style.display = "block";
+      planToggle.classList.remove("active");
+      profileScreeningStageBtn.classList.add("active");
+      onboardingStageBtn.classList.remove("active");
+    }
+
+    loadDetailData();
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        activateSection(link.dataset.target);
+        hideProjectDashboard();
+      });
+    });
+
+    myProjectsToggle.addEventListener("click", () => {
+      const isOpen = projectSubmenu.classList.toggle("open");
+      myProjectsToggle.classList.toggle("active", isOpen);
+      activateSection("myProjectsSection");
+      hideProjectDashboard();
+    });
+
+    macquarieToggle.addEventListener("click", () => {
+      macquarieSubmenu.classList.toggle("open");
+      macquarieToggle.classList.toggle("active");
+      activateSection("myProjectsSection");
+    });
+
+    planToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      activateSection("myProjectsSection");
+      myProjectsCard.style.display = "none";
+      showProfileScreeningStage();
+      planToggle.classList.add("active");
+      projectSubmenu.classList.add("open");
+      macquarieSubmenu.classList.add("open");
+      myProjectsToggle.classList.add("active");
+      macquarieToggle.classList.add("active");
+    });
+
+    profileScreeningStageBtn.addEventListener("click", () => {
+      showProfileScreeningStage();
+      planToggle.classList.add("active");
+    });
+
+    onboardingStageBtn.addEventListener("click", () => {
+      showOnboardingStage();
+      planToggle.classList.add("active");
+    });
+
+    bindCandidateNameLinks();
+
+    if (homeChatbotLauncher && homeChatbotPopup) {
+      homeChatbotLauncher.addEventListener("click", () => {
+        homeChatbotPopup.style.display = homeChatbotPopup.style.display === "block" ? "none" : "block";
+      });
+    }
+
+    if (homeChatbotCloseBtn && homeChatbotPopup) {
+      homeChatbotCloseBtn.addEventListener("click", () => {
+        homeChatbotPopup.style.display = "none";
+      });
+    }
+
+    if (homeChatbotAskBtn) {
+      homeChatbotAskBtn.addEventListener("click", askHomepageChatbot);
+    }
+
+    if (homeChatbotApplyFilterBtn) {
+      homeChatbotApplyFilterBtn.addEventListener("click", async () => {
+        const query = homeChatbotQuery?.value?.trim() || "";
+        if (!query) {
+          homeChatbotResponse.textContent = "Enter a question first.";
+          return;
+        }
+
+        const assistantReply = await askHomepageChatbot();
+        const applied = applyChatbotCandidateFilters(query);
+        if (!applied) {
+          renderHomepageAssistantConversation(
+            query,
+            `${assistantReply}\n\nNo matching candidate filter rule was detected from the admin prompt.`
+          );
+        }
+      });
+    }
+
+    if (homeChatbotQuery) {
+      homeChatbotQuery.addEventListener("keydown", (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+          askHomepageChatbot();
+        }
+      });
+    }
+
+    if (homeChatbotClearBtn) {
+      homeChatbotClearBtn.addEventListener("click", () => {
+        homeChatbotQuery.value = "";
+        homeChatbotResponse.textContent = "Ask a question to get a realtime response.";
+      });
+    }
+
+    returnToOnboardingBtn.addEventListener("click", () => {
+      detailDashboard.classList.remove("active-dashboard");
+      showOnboardingStage();
+      planToggle.classList.add("active");
+    });
+
+    // Refresh candidates button
+    const refreshCandidatesBtn = document.getElementById("refreshCandidatesBtn");
+    if (refreshCandidatesBtn) {
+      refreshCandidatesBtn.addEventListener("click", async () => {
+        refreshCandidatesBtn.disabled = true;
+        refreshCandidatesBtn.textContent = "🔄 Refreshing...";
+        
+        try {
+          // Call the Python script to regenerate candidates from resumes
+          const response = await fetch('/api/refresh-candidates', {
+            method: 'POST'
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            
+            // Reload the screening_records.js file by creating a new script tag
+            const oldScript = document.querySelector('script[src*="screening_records.js"]');
+            if (oldScript) {
+              oldScript.remove();
+            }
+            
+            const newScript = document.createElement('script');
+            newScript.src = `screening_records.js?t=${Date.now()}`;
+            newScript.onload = () => {
+              // Refresh the table display
+              populateFilterOptions();
+              renderProfileScreeningTable();
+              alert(`✅ Refreshed! Found ${data.count || 0} candidates from Resumes folder.`);
+            };
+            document.body.appendChild(newScript);
+          } else {
+            alert('❌ Failed to refresh candidates. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error refreshing candidates:', error);
+          alert('❌ Error refreshing candidates: ' + error.message);
+        } finally {
+          refreshCandidatesBtn.disabled = false;
+          refreshCandidatesBtn.textContent = "🔄 Refresh Candidates from Resumes Folder";
+        }
+      });
+    }
+  </script>
+  <script src="screening_records.js"></script>
+</body>
+</html>

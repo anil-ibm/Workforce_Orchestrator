@@ -1,0 +1,1694 @@
+[
+  {
+    "workflow_id": "00b9eca5-a6d4-479a-b684-e691aa838838",
+    "workflow_name": "Employee Onboarding Automation",
+    "workflow_type": "onboarding",
+    "employee_id": "EMP002",
+    "employee_name": "Ananya Sharma",
+    "status": "completed",
+    "created_at": "2026-05-19T06:48:13.915167Z",
+    "details": {
+      "department": "Engineering",
+      "role": "Backend Engineer",
+      "joining_date": "2026-06-01",
+      "assigned_assets": [
+        {
+          "asset_id": "LAP-1001",
+          "asset_type": "laptop",
+          "model": "ThinkPad T14"
+        },
+        {
+          "asset_id": "MON-2001",
+          "asset_type": "monitor",
+          "model": "Dell 24"
+        },
+        {
+          "asset_id": "ID-3001",
+          "asset_type": "id_card",
+          "model": "Corporate RFID"
+        }
+      ],
+      "pending_assets": []
+    },
+    "notifications": [
+      {
+        "to": "ananya.sharma@example.com",
+        "subject": "Welcome to the organization - setup initiated",
+        "body": "Hello Ananya Sharma, your onboarding has started. Assets planned: LAP-1001, MON-2001, ID-3001. Joining date: 2026-06-01."
+      },
+      {
+        "to": "manager.eng@example.com",
+        "subject": "Onboarding initiated for Ananya Sharma",
+        "body": "Manager notification: onboarding for Ananya Sharma is active. Assigned assets: LAP-1001, MON-2001, ID-3001. Pending assets: none."
+      },
+      {
+        "to": "it-admin@example.com",
+        "subject": "Workforce orchestration action required for Ananya Sharma",
+        "body": "Workflow type: onboarding. Assigned assets: LAP-1001, MON-2001, ID-3001. Pending assets: none. Missing assets: none."
+      }
+    ]
+  },
+  {
+    "workflow_id": "4ff81a75-c406-4397-b623-af0db00a9b89",
+    "workflow_name": "Employee Offboarding Automation",
+    "workflow_type": "offboarding",
+    "employee_id": "EMP001",
+    "employee_name": "Ravi Kumar",
+    "status": "completed_with_missing_assets",
+    "created_at": "2026-05-19T06:48:35.876101Z",
+    "details": {
+      "last_working_date": "2026-05-31",
+      "returned_assets": [
+        "LAP-1002"
+      ],
+      "missing_assets": [
+        "ID-9999"
+      ]
+    },
+    "notifications": [
+      {
+        "to": "ravi.kumar@example.com",
+        "subject": "Offboarding and asset return process started",
+        "body": "Hello Ravi Kumar, your offboarding is initiated. Please return assets by 2026-05-31. Assets: LAP-1002, ID-9999."
+      },
+      {
+        "to": "manager.hr@example.com",
+        "subject": "Offboarding initiated for Ravi Kumar",
+        "body": "Manager notification: offboarding for Ravi Kumar is active. Returned assets: LAP-1002. Missing assets: ID-9999."
+      },
+      {
+        "to": "it-admin@example.com",
+        "subject": "Workforce orchestration action required for Ravi Kumar",
+        "body": "Workflow type: offboarding. Assigned assets: LAP-1002, ID-9999. Pending assets: none. Missing assets: ID-9999."
+      }
+    ]
+  },
+  {
+    "workflow_id": "1c336dec-bec1-41c5-85c1-b90d80760e45",
+    "workflow_name": "Employee Onboarding Automation",
+    "workflow_type": "onboarding",
+    "employee_id": "EMP003",
+    "employee_name": "Anil Kumar",
+    "status": "completed_with_pending_procurement",
+    "current_stage": "Asset Initiated with Pending Items",
+    "created_at": "2026-05-25T12:52:39.804053Z",
+    "stakeholders": {
+      "employee_email": "anil.kumar@example.com",
+      "manager_email": "manager.ops@example.com",
+      "pmo_email": "pmo.macquarie@example.com",
+      "dsp_reviewer_email": "dsp.reviewer@example.com"
+    },
+    "details": {
+      "department": "Operations",
+      "role": "Workforce Analyst",
+      "joining_date": "2026-06-10",
+      "project_name": "Workforce Orchestrator",
+      "client_name": "Macquarie",
+      "screening_status": "Approve",
+      "bcg": {
+        "required": true,
+        "status": "cleared",
+        "vendor": "First Advantage",
+        "reference_id": "BCG-EMP003-20260610",
+        "completed_at": "2026-05-25T12:52:39.804019Z"
+      },
+      "assets": {
+        "requested_assets": [
+          "laptop",
+          "id_card",
+          "mail_id",
+          "welcome_kit"
+        ],
+        "initiated_assets": [
+          {
+            "asset_type": "laptop",
+            "status": "initiated",
+            "owner_team": "IT",
+            "initiated_at": "2026-05-25T12:52:39.803687Z"
+          },
+          {
+            "asset_type": "id_card",
+            "status": "initiated",
+            "owner_team": "Admin",
+            "initiated_at": "2026-05-25T12:52:39.803724Z"
+          },
+          {
+            "asset_type": "mail_id",
+            "status": "initiated",
+            "owner_team": "IT",
+            "initiated_at": "2026-05-25T12:52:39.803742Z"
+          },
+          {
+            "asset_type": "welcome_kit",
+            "status": "initiated",
+            "owner_team": "Admin",
+            "initiated_at": "2026-05-25T12:52:39.803833Z"
+          }
+        ],
+        "assigned_assets": [
+          {
+            "asset_id": "LAP-1002",
+            "asset_type": "laptop",
+            "model": "HP EliteBook",
+            "status": "assigned",
+            "owner_team": "IT"
+          },
+          {
+            "asset_id": "MAIL_ID-2b699161",
+            "asset_type": "mail_id",
+            "model": "Provisioned Service",
+            "status": "assigned",
+            "owner_team": "IT"
+          },
+          {
+            "asset_id": "WELCOME_KIT-7187256e",
+            "asset_type": "welcome_kit",
+            "model": "Provisioned Service",
+            "status": "assigned",
+            "owner_team": "Admin"
+          }
+        ],
+        "pending_assets": [
+          {
+            "asset_type": "id_card",
+            "status": "pending"
+          }
+        ]
+      }
+    },
+    "stage_history": [
+      {
+        "stage": "Profile Screening",
+        "status": "completed",
+        "timestamp": "2026-05-25T12:52:39.803400Z",
+        "notes": "Candidate approved and moved to onboarding queue."
+      },
+      {
+        "stage": "Onboarding Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-25T12:52:39.803524Z",
+        "notes": "Mandatory onboarding details validated."
+      },
+      {
+        "stage": "BCG",
+        "status": "initiated",
+        "timestamp": "2026-05-25T12:52:39.803587Z",
+        "notes": "Background check initiated."
+      },
+      {
+        "stage": "BCG",
+        "status": "completed",
+        "timestamp": "2026-05-25T12:52:39.803636Z",
+        "notes": "Background check cleared."
+      },
+      {
+        "stage": "Asset Initiation",
+        "status": "completed",
+        "timestamp": "2026-05-25T12:52:39.803879Z",
+        "notes": "Asset and access initiation completed."
+      },
+      {
+        "stage": "Onboarding Completed",
+        "status": "completed",
+        "timestamp": "2026-05-25T12:52:39.803945Z",
+        "notes": "Candidate marked ready for joining or onboarded."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "manager.ops@example.com",
+        "stage": "screening_approved",
+        "subject": "Profile screening approved for Anil Kumar",
+        "body": "Profile screening is approved for Anil Kumar. Project: Workforce Orchestrator. Client: Macquarie. Current stage: Profile Screening Approved.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.macquarie@example.com",
+        "stage": "screening_approved",
+        "subject": "Profile screening approved for Anil Kumar",
+        "body": "Profile screening is approved for Anil Kumar. Project: Workforce Orchestrator. Client: Macquarie. Current stage: Profile Screening Approved.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.reviewer@example.com",
+        "stage": "screening_approved",
+        "subject": "Profile screening approved for Anil Kumar",
+        "body": "Profile screening is approved for Anil Kumar. Project: Workforce Orchestrator. Client: Macquarie. Current stage: Profile Screening Approved.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "anil.kumar@example.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar",
+        "body": "Onboarding is initiated for Anil Kumar. Joining date: 2026-06-10. Department: Operations. Role: Workforce Analyst. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.ops@example.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar",
+        "body": "Onboarding is initiated for Anil Kumar. Joining date: 2026-06-10. Department: Operations. Role: Workforce Analyst. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.macquarie@example.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar",
+        "body": "Onboarding is initiated for Anil Kumar. Joining date: 2026-06-10. Department: Operations. Role: Workforce Analyst. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.reviewer@example.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar",
+        "body": "Onboarding is initiated for Anil Kumar. Joining date: 2026-06-10. Department: Operations. Role: Workforce Analyst. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "anil.kumar@example.com",
+        "stage": "bcg_initiated",
+        "subject": "BCG initiated for Anil Kumar",
+        "body": "Background check has started for Anil Kumar. Current BCG status: initiated. Project: Workforce Orchestrator. Client: Macquarie.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.macquarie@example.com",
+        "stage": "bcg_initiated",
+        "subject": "BCG initiated for Anil Kumar",
+        "body": "Background check has started for Anil Kumar. Current BCG status: initiated. Project: Workforce Orchestrator. Client: Macquarie.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.reviewer@example.com",
+        "stage": "bcg_initiated",
+        "subject": "BCG initiated for Anil Kumar",
+        "body": "Background check has started for Anil Kumar. Current BCG status: initiated. Project: Workforce Orchestrator. Client: Macquarie.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "anil.kumar@example.com",
+        "stage": "bcg_completed",
+        "subject": "BCG cleared for Anil Kumar",
+        "body": "Background check is completed for Anil Kumar. Current BCG status: cleared. Asset initiation can proceed based on workflow rules.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.ops@example.com",
+        "stage": "bcg_completed",
+        "subject": "BCG cleared for Anil Kumar",
+        "body": "Background check is completed for Anil Kumar. Current BCG status: cleared. Asset initiation can proceed based on workflow rules.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.macquarie@example.com",
+        "stage": "bcg_completed",
+        "subject": "BCG cleared for Anil Kumar",
+        "body": "Background check is completed for Anil Kumar. Current BCG status: cleared. Asset initiation can proceed based on workflow rules.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.reviewer@example.com",
+        "stage": "bcg_completed",
+        "subject": "BCG cleared for Anil Kumar",
+        "body": "Background check is completed for Anil Kumar. Current BCG status: cleared. Asset initiation can proceed based on workflow rules.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "anil.kumar@example.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAP-1002, MAIL_ID-2b699161, WELCOME_KIT-7187256e. Pending assets: id_card. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.ops@example.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAP-1002, MAIL_ID-2b699161, WELCOME_KIT-7187256e. Pending assets: id_card. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.macquarie@example.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAP-1002, MAIL_ID-2b699161, WELCOME_KIT-7187256e. Pending assets: id_card. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.reviewer@example.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAP-1002, MAIL_ID-2b699161, WELCOME_KIT-7187256e. Pending assets: id_card. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "anil.kumar@example.com",
+        "stage": "onboarding_completed",
+        "subject": "Onboarding completed for Anil Kumar",
+        "body": "Onboarding is completed for Anil Kumar. Current stage: Asset Initiated with Pending Items. Assigned assets: LAP-1002, MAIL_ID-2b699161, WELCOME_KIT-7187256e. Pending assets: id_card.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.ops@example.com",
+        "stage": "onboarding_completed",
+        "subject": "Onboarding completed for Anil Kumar",
+        "body": "Onboarding is completed for Anil Kumar. Current stage: Asset Initiated with Pending Items. Assigned assets: LAP-1002, MAIL_ID-2b699161, WELCOME_KIT-7187256e. Pending assets: id_card.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.macquarie@example.com",
+        "stage": "onboarding_completed",
+        "subject": "Onboarding completed for Anil Kumar",
+        "body": "Onboarding is completed for Anil Kumar. Current stage: Asset Initiated with Pending Items. Assigned assets: LAP-1002, MAIL_ID-2b699161, WELCOME_KIT-7187256e. Pending assets: id_card.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.reviewer@example.com",
+        "stage": "onboarding_completed",
+        "subject": "Onboarding completed for Anil Kumar",
+        "body": "Onboarding is completed for Anil Kumar. Current stage: Asset Initiated with Pending Items. Assigned assets: LAP-1002, MAIL_ID-2b699161, WELCOME_KIT-7187256e. Pending assets: id_card.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "b3d5c965-5470-4990-b27e-7f0b7321e5cd",
+    "workflow_name": "Employee Offboarding Automation",
+    "workflow_type": "offboarding",
+    "employee_id": "EMP002",
+    "employee_name": "Ananya Sharma",
+    "status": "completed",
+    "current_stage": "Offboarded",
+    "created_at": "2026-05-25T12:52:49.752913Z",
+    "stakeholders": {
+      "employee_email": "ananya.sharma@example.com",
+      "manager_email": "manager.eng@example.com",
+      "pmo_email": "pmo.macquarie@example.com",
+      "dsp_reviewer_email": "dsp.reviewer@example.com"
+    },
+    "details": {
+      "last_working_date": "2026-07-31",
+      "returned_assets": [
+        "LAP-1001",
+        "MON-2001",
+        "ID-3001"
+      ],
+      "missing_assets": [],
+      "revoked_access": []
+    },
+    "stage_history": [
+      {
+        "stage": "Offboarding Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-25T12:52:49.752635Z",
+        "notes": "Employee exit workflow started."
+      },
+      {
+        "stage": "Asset Return",
+        "status": "completed",
+        "timestamp": "2026-05-25T12:52:49.752782Z",
+        "notes": "Assets processed for return or marked missing."
+      },
+      {
+        "stage": "Access Revocation",
+        "status": "completed",
+        "timestamp": "2026-05-25T12:52:49.752794Z",
+        "notes": "Logical access reviewed and revoked where applicable."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "ananya.sharma@example.com",
+        "stage": "offboarding_initiated",
+        "subject": "Offboarding initiated for Ananya Sharma",
+        "body": "Offboarding has started for Ananya Sharma. Last working date: 2026-07-31. Current stage: Offboarding Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.eng@example.com",
+        "stage": "offboarding_initiated",
+        "subject": "Offboarding initiated for Ananya Sharma",
+        "body": "Offboarding has started for Ananya Sharma. Last working date: 2026-07-31. Current stage: Offboarding Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.macquarie@example.com",
+        "stage": "offboarding_initiated",
+        "subject": "Offboarding initiated for Ananya Sharma",
+        "body": "Offboarding has started for Ananya Sharma. Last working date: 2026-07-31. Current stage: Offboarding Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.reviewer@example.com",
+        "stage": "offboarding_initiated",
+        "subject": "Offboarding initiated for Ananya Sharma",
+        "body": "Offboarding has started for Ananya Sharma. Last working date: 2026-07-31. Current stage: Offboarding Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "ananya.sharma@example.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Ananya Sharma",
+        "body": "Offboarding is completed for Ananya Sharma. Returned assets: LAP-1001, MON-2001, ID-3001. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.eng@example.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Ananya Sharma",
+        "body": "Offboarding is completed for Ananya Sharma. Returned assets: LAP-1001, MON-2001, ID-3001. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.macquarie@example.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Ananya Sharma",
+        "body": "Offboarding is completed for Ananya Sharma. Returned assets: LAP-1001, MON-2001, ID-3001. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.reviewer@example.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Ananya Sharma",
+        "body": "Offboarding is completed for Ananya Sharma. Returned assets: LAP-1001, MON-2001, ID-3001. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "fc5dcb2a-f840-41e7-bf7a-24e8ee42f9fb",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T05:01:00.932078Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:00.932201Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "70364a88-39ed-4f24-a0c6-7c27d2674ec8",
+    "workflow_name": "Realtime Stage Trigger - offboarding_completed",
+    "workflow_type": "offboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Offboarded",
+    "created_at": "2026-05-26T05:01:02.616701Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "offboarding_completed"
+    },
+    "stage_history": [
+      {
+        "stage": "Offboarded",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:02.616742Z",
+        "notes": "Realtime notification triggered for offboarding_completed."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "5d784965-7c17-4049-803a-76d0bb014593",
+    "workflow_name": "Realtime Stage Trigger - offboarding_completed",
+    "workflow_type": "offboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Offboarded",
+    "created_at": "2026-05-26T05:01:05.457210Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "offboarding_completed"
+    },
+    "stage_history": [
+      {
+        "stage": "Offboarded",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:05.457326Z",
+        "notes": "Realtime notification triggered for offboarding_completed."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "7fb7fa18-ad63-44e0-9fbe-5eb811419eeb",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T05:01:06.597628Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:06.597669Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "bb780922-a378-4d81-a1eb-68fe66f763f7",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T05:01:13.492090Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:13.492122Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "ac9405ed-443f-44d3-981f-2ade7831c6bd",
+    "workflow_name": "Realtime Stage Trigger - offboarding_completed",
+    "workflow_type": "offboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Offboarded",
+    "created_at": "2026-05-26T05:01:17.148931Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "offboarding_completed"
+    },
+    "stage_history": [
+      {
+        "stage": "Offboarded",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:17.148975Z",
+        "notes": "Realtime notification triggered for offboarding_completed."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil",
+        "body": "Offboarding is completed for Anil. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "6092765b-961e-4046-bb25-69a9fa49b616",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T05:01:18.854120Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:18.854158Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "6fce923e-f2d4-45d1-8ec0-459fbc31930e",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T05:01:21.872045Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:21.872082Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "16168dd7-72b0-4855-a780-459d9aea7701",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T05:01:22.810281Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:22.810319Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "873ddd95-d6ba-48b4-9086-9e55408e825e",
+    "workflow_name": "Realtime Stage Trigger - onboarding_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Onboarding Initiated",
+    "created_at": "2026-05-26T05:01:26.338035Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "onboarding_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Onboarding Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:26.338069Z",
+        "notes": "Realtime notification triggered for onboarding_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "7e4c8f41-9826-46fb-b82e-1df297cbba1c",
+    "workflow_name": "Realtime Stage Trigger - onboarding_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Onboarding Initiated",
+    "created_at": "2026-05-26T05:01:29.143545Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "onboarding_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Onboarding Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:29.143602Z",
+        "notes": "Realtime notification triggered for onboarding_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "396b2d7c-d72e-4e45-83a3-e2aa037fda7e",
+    "workflow_name": "Realtime Stage Trigger - onboarding_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Onboarding Initiated",
+    "created_at": "2026-05-26T05:01:38.474304Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "onboarding_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Onboarding Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T05:01:38.474336Z",
+        "notes": "Realtime notification triggered for onboarding_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "df357411-3e41-4686-9df6-3e61fb610414",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T08:46:41.176476Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T08:46:41.176502Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil",
+        "body": "Assets and access are initiated for Anil. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "719500f4-40bb-405b-848d-3fc9d1a3cd0f",
+    "workflow_name": "Realtime Stage Trigger - onboarding_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "769EBC680",
+    "employee_name": "Anil",
+    "status": "notification_sent",
+    "current_stage": "Onboarding Initiated",
+    "created_at": "2026-05-26T08:46:48.427841Z",
+    "stakeholders": {
+      "employee_email": "anil@ibm.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "onboarding_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Onboarding Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T08:46:48.427868Z",
+        "notes": "Realtime notification triggered for onboarding_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "anil@ibm.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil",
+        "body": "Onboarding is initiated for Anil. Joining date: 03-Apr-26. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "5485f2d3-dc5d-4e23-a642-5620fc42b509",
+    "workflow_name": "Realtime Stage Trigger - onboarding_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "EMP1001",
+    "employee_name": "Anil Kumar M",
+    "status": "notification_sent",
+    "current_stage": "Onboarding Initiated",
+    "created_at": "2026-05-26T09:18:43.574935Z",
+    "stakeholders": {
+      "employee_email": "manilkumar1909@gmail.com",
+      "manager_email": "manager@example.com",
+      "pmo_email": "pmo@example.com",
+      "dsp_reviewer_email": "dsp@example.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "onboarding_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Onboarding Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T09:18:43.576212Z",
+        "notes": "Realtime notification triggered for onboarding_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "manilkumar1909@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar M",
+        "body": "Onboarding is initiated for Anil Kumar M. Joining date: 2026-05-26. Department: Data Engineering. Role: Data Engineer. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager@example.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar M",
+        "body": "Onboarding is initiated for Anil Kumar M. Joining date: 2026-05-26. Department: Data Engineering. Role: Data Engineer. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo@example.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar M",
+        "body": "Onboarding is initiated for Anil Kumar M. Joining date: 2026-05-26. Department: Data Engineering. Role: Data Engineer. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp@example.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar M",
+        "body": "Onboarding is initiated for Anil Kumar M. Joining date: 2026-05-26. Department: Data Engineering. Role: Data Engineer. BCG required: Yes.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "83e2a167-5686-4a40-ac87-e603404f28f5",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "994EBC987",
+    "employee_name": "Anil Kumar",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T10:09:56.204553Z",
+    "stakeholders": {
+      "employee_email": "manilkumar1909@gmail.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T10:09:56.204587Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "manilkumar1909@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "ce85e179-9c81-4b89-b65a-4d7107747f00",
+    "workflow_name": "Realtime Stage Trigger - offboarding_completed",
+    "workflow_type": "offboarding",
+    "employee_id": "994EBC987",
+    "employee_name": "Anil Kumar",
+    "status": "notification_sent",
+    "current_stage": "Offboarded",
+    "created_at": "2026-05-26T10:12:33.165524Z",
+    "stakeholders": {
+      "employee_email": "manilkumar1909@gmail.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "offboarding_completed"
+    },
+    "stage_history": [
+      {
+        "stage": "Offboarded",
+        "status": "completed",
+        "timestamp": "2026-05-26T10:12:33.165543Z",
+        "notes": "Realtime notification triggered for offboarding_completed."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "manilkumar1909@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil Kumar",
+        "body": "Offboarding is completed for Anil Kumar. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil Kumar",
+        "body": "Offboarding is completed for Anil Kumar. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil Kumar",
+        "body": "Offboarding is completed for Anil Kumar. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "offboarding_completed",
+        "subject": "Offboarding completed for Anil Kumar",
+        "body": "Offboarding is completed for Anil Kumar. Returned assets: none. Missing assets: none. Current stage: Offboarded.",
+        "delivery_status": "skipped",
+        "delivery_channel": "gmail_smtp_not_configured"
+      }
+    ]
+  },
+  {
+    "workflow_id": "62c920e9-a916-45e9-95f5-92927920349f",
+    "workflow_name": "Realtime Stage Trigger - onboarding_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "994EBC987",
+    "employee_name": "Anil Kumar",
+    "status": "notification_sent",
+    "current_stage": "Onboarding Initiated",
+    "created_at": "2026-05-26T10:33:10.629188Z",
+    "stakeholders": {
+      "employee_email": "manilkumar1909@gmail.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "onboarding_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Onboarding Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T10:33:10.629226Z",
+        "notes": "Realtime notification triggered for onboarding_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "manilkumar1909@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar",
+        "body": "Onboarding is initiated for Anil Kumar. Joining date: 2026-05-25. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "failed",
+        "delivery_channel": "email_agent_smtp",
+        "error": "'charmap' codec can't encode character '\\u2717' in position 0: character maps to <undefined>"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar",
+        "body": "Onboarding is initiated for Anil Kumar. Joining date: 2026-05-25. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "failed",
+        "delivery_channel": "email_agent_smtp",
+        "error": "'charmap' codec can't encode character '\\u2717' in position 0: character maps to <undefined>"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar",
+        "body": "Onboarding is initiated for Anil Kumar. Joining date: 2026-05-25. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "failed",
+        "delivery_channel": "email_agent_smtp",
+        "error": "'charmap' codec can't encode character '\\u2717' in position 0: character maps to <undefined>"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "onboarding_initiated",
+        "subject": "Onboarding initiated for Anil Kumar",
+        "body": "Onboarding is initiated for Anil Kumar. Joining date: 2026-05-25. Department: Workforce Delivery. Role: Practitioner. BCG required: Yes.",
+        "delivery_status": "failed",
+        "delivery_channel": "email_agent_smtp",
+        "error": "'charmap' codec can't encode character '\\u2717' in position 0: character maps to <undefined>"
+      }
+    ]
+  },
+  {
+    "workflow_id": "51503673-61f1-42b9-85cb-a813682e5e02",
+    "workflow_name": "Realtime Stage Trigger - assets_initiated",
+    "workflow_type": "onboarding",
+    "employee_id": "994EBC987",
+    "employee_name": "Anil Kumar",
+    "status": "notification_sent",
+    "current_stage": "Assets Initiated",
+    "created_at": "2026-05-26T10:35:12.627126Z",
+    "stakeholders": {
+      "employee_email": "manilkumar1909@gmail.com",
+      "manager_email": "manager.workflow@gmail.com",
+      "pmo_email": "pmo.workflow@gmail.com",
+      "dsp_reviewer_email": "dsp.workflow@gmail.com"
+    },
+    "details": {
+      "trigger_mode": "realtime_api",
+      "stage_name": "assets_initiated"
+    },
+    "stage_history": [
+      {
+        "stage": "Assets Initiated",
+        "status": "completed",
+        "timestamp": "2026-05-26T10:35:12.627185Z",
+        "notes": "Realtime notification triggered for assets_initiated."
+      }
+    ],
+    "notifications": [
+      {
+        "to": "manilkumar1909@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "failed",
+        "delivery_channel": "email_agent_smtp",
+        "error": "'charmap' codec can't encode character '\\u2717' in position 0: character maps to <undefined>"
+      },
+      {
+        "to": "manager.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "failed",
+        "delivery_channel": "email_agent_smtp",
+        "error": "'charmap' codec can't encode character '\\u2717' in position 0: character maps to <undefined>"
+      },
+      {
+        "to": "pmo.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "failed",
+        "delivery_channel": "email_agent_smtp",
+        "error": "'charmap' codec can't encode character '\\u2717' in position 0: character maps to <undefined>"
+      },
+      {
+        "to": "dsp.workflow@gmail.com",
+        "stage": "assets_initiated",
+        "subject": "Assets initiated for Anil Kumar",
+        "body": "Assets and access are initiated for Anil Kumar. Assigned assets: LAPTOP-LOCAL, IDCARD-LOCAL, MAILID-LOCAL. Pending assets: none. Current stage: Assets Initiated.",
+        "delivery_status": "failed",
+        "delivery_channel": "email_agent_smtp",
+        "error": "'charmap' codec can't encode character '\\u2717' in position 0: character maps to <undefined>"
+      }
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "workflow_type": "offboarding",
+  "employee_id": "EMP002",
+  "employee_name": "Ananya Sharma",
+  "employee_email": "ananya.sharma@example.com",
+  "manager_email": "manager.eng@example.com",
+  "pmo_email": "pmo.macquarie@example.com",
+  "dsp_reviewer_email": "dsp.reviewer@example.com",
+  "last_working_date": "2026-07-31",
+  "assigned_assets": [
+    "LAP-1001",
+    "MON-2001",
+    "ID-3001"
+  ]
+}

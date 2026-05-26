@@ -1,0 +1,42 @@
+[
+  {
+    "employee_id": "EMP001",
+    "employee_name": "Ravi Kumar",
+    "employee_email": "ravi.kumar@example.com",
+    "manager_email": "manager.hr@example.com",
+    "department": "Engineering",
+    "role": "Developer",
+    "status": "inactive",
+    "assigned_assets": []
+  },
+  {
+    "employee_id": "EMP002",
+    "employee_name": "Ananya Sharma",
+    "employee_email": "ananya.sharma@example.com",
+    "manager_email": "manager.eng@example.com",
+    "department": "Engineering",
+    "role": "Backend Engineer",
+    "status": "inactive",
+    "assigned_assets": [],
+    "current_stage": "Offboarded"
+  },
+  {
+    "employee_id": "EMP003",
+    "employee_name": "Anil Kumar",
+    "employee_email": "anil.kumar@example.com",
+    "manager_email": "manager.ops@example.com",
+    "pmo_email": "pmo.macquarie@example.com",
+    "dsp_reviewer_email": "dsp.reviewer@example.com",
+    "department": "Operations",
+    "role": "Workforce Analyst",
+    "project_name": "Workforce Orchestrator",
+    "client_name": "Macquarie",
+    "status": "active",
+    "current_stage": "Asset Initiated with Pending Items",
+    "assigned_assets": [
+      "LAP-1002",
+      "MAIL_ID-2b699161",
+      "WELCOME_KIT-7187256e"
+    ]
+  }
+]
